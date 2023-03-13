@@ -7,7 +7,7 @@ const Navbar = () => {
     <div className='container flex justify-between py-8'>
       <div className='inline-flex'>
         <Image alt='logo' src={"/logo.png"} width={175} height={100} />
-        <div><span className='rounded-full bg-black px-4 py-1 text-sm text-white'>Beta</span></div>
+        <div><span className='rounded-full bg-black px-4 py-1 text-sm text-white'>Early Access</span></div>
       </div>
       <Button>Login</Button>
     </div>
