@@ -77,7 +77,7 @@ const Page = () => {
     setIsFetching(false);
   };
   return (
-    <div className='container w-1/2'>
+    <div className='container sm:w-1/2'>
       <div className="flex flex-col items-center justify-center bg-[url('/bg-transparent.svg')] py-10">
         <Image
           src="/illustration.png"
