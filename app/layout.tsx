@@ -2,6 +2,7 @@ import Navbar from "@/components/nav-bar"
 import { cn } from "@/lib/utils"
 import "@/styles/globals.css"
 import { Inter } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/react';
 
 export const metadata = {
   title: 'BikinSoal - Generate Soal Online',
@@ -55,10 +56,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cn('bg-zinc-50',inter.className)}>
+      <body className={cn('bg-zinc-50', inter.className)}>
         <Navbar />
         <main>
           {children}
+          <Analytics />
         </main>
       </body>
     </html>
