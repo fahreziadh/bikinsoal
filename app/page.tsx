@@ -3,9 +3,10 @@ import Navbar from '@/components/nav-bar';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { mapel } from '@/lib/mapel';
 import Image from 'next/image';
 import React, { useRef, useState } from 'react'
-import { useForm } from 'react-hook-form';
+import { SubjectChoice } from './subject';
 
 
 interface IParams {
@@ -15,6 +16,11 @@ interface IParams {
 }
 
 const Page = () => {
+
+  const [subject, setSubject] = useState<string>("");
+  const [grade, setGrade] = useState<string>("3 SMA");
+  const [totalOption, setTotalOption] = useState<number>(4);
+
   const [responseBuffer, setResponseBuffer] = useState<string>("");
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const soalRef = useRef<null | HTMLDivElement>(null);
@@ -23,13 +29,9 @@ const Page = () => {
       soalRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
-  const { register, handleSubmit } = useForm()
 
-  const onSubmit = async (data: any) => {
-    const { subject, grade } = data;
-
-    await generate({ subject, grade });
-
+  const onSubmit = async () => {
+    await generate({ subject, grade, total_option: totalOption });
   }
 
   const reset = () => {
@@ -76,6 +78,7 @@ const Page = () => {
     scrollToBios();
     setIsFetching(false);
   };
+
   return (
     <div className='container sm:w-1/2'>
       <div className="flex flex-col items-center justify-center bg-[url('/bg-transparent.svg')] py-10">
@@ -86,12 +89,12 @@ const Page = () => {
           height={100}
           quality={100}
         />
-        <h1 className='mt-8 text-center text-[60px] font-bold leading-none text-[#1B1A1E]'>Generate Soal Ujian di bantu AI</h1>
+        <h1 className='mt-8 text-center text-[40px] font-bold leading-none text-[#1B1A1E] sm:text-[60px]'>Generate Soal Ujian di bantu AI</h1>
         <h2 className='mt-8'><span className='font-bold'>120</span> Soal sudah di generate </h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="mt-10 grid w-full gap-1.5">
+        <form className="mt-10 grid w-full gap-1.5">
           <Label htmlFor="message-2">Mata Pelajaran / Subject</Label>
-          <Textarea disabled={isFetching} {...register('subject')} placeholder="Misal: Matematika, IPA, Bahasa Inggris, dll" id="message-2" className='bg-white' />
-          <Button disabled={isFetching} className='mt-2'>{isFetching ? "Sedang Menulis..." : "Generate Soal 📃"}</Button>
+          <SubjectChoice onChange={(value) => setSubject(value)} />
+          <Button disabled={isFetching} className='mt-2' onClick={onSubmit} type="button">{isFetching ? "Sedang Menulis..." : "Generate Soal 📃"}</Button>
         </form>
       </div>
       <div className='flex w-full flex-col gap-7 py-8'>
@@ -118,6 +121,7 @@ const Page = () => {
                     <div key={index}><span>{String.fromCharCode(96 + index).toUpperCase()}. </span>{option}</div>
                   )
                 })}
+                {question.split("(a)")[1] && <div className='mt-4'><span className='font-bold'>Jawaban : </span>{question.split("(a)")[1]}</div>}
               </div>
             </div>
           )
