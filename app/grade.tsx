@@ -38,9 +38,10 @@ const grades = [
 
 interface Props {
     onChange?: (value: string) => void
+    disabled?: boolean
 }
 
-export function Grade({ onChange }: Props) {
+export function Grade({ onChange, disabled }: Props) {
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState("")
 
@@ -56,7 +57,7 @@ export function Grade({ onChange }: Props) {
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="w-full justify-between"
+                    className="w-full justify-between bg-white"
                 >
                     {value
                         ? value
@@ -65,8 +66,8 @@ export function Grade({ onChange }: Props) {
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-full p-0">
-                <Command className="max-h-96">
-                    <CommandInput placeholder="Cari tingkatan..." />
+                <Command className="max-h-96 ">
+                    <CommandInput disabled={disabled} placeholder="Cari tingkatan..." />
                     <CommandEmpty>No grade found.</CommandEmpty>
                     <CommandGroup heading="Pilih Tingkat Sekolah">
                         {grades.map((grade) => (

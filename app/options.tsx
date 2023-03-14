@@ -28,9 +28,10 @@ const options = [
 
 interface Props {
   onChange?: (value: string) => void
+  disabled?: boolean
 }
 
-export function Options({ onChange }: Props) {
+export function Options({ onChange, disabled }: Props) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
 
@@ -46,7 +47,7 @@ export function Options({ onChange }: Props) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between"
+          className="w-full justify-between bg-white"
         >
           {value
             ? value
@@ -56,7 +57,7 @@ export function Options({ onChange }: Props) {
       </PopoverTrigger>
       <PopoverContent className="w-full p-0">
         <Command>
-          <CommandInput placeholder="Cari pilihan..." />
+          <CommandInput disabled={disabled} placeholder="Cari pilihan..." />
           <CommandEmpty>No framework found.</CommandEmpty>
           <CommandGroup>
             {options.map((framework) => (

@@ -25,9 +25,10 @@ import { mapel } from "@/lib/mapel"
 
 interface Props {
     onChange?: (value: string) => void
+    disabled?: boolean
 }
 
-export function SubjectChoice({ onChange }: Props) {
+export function SubjectChoice({ onChange, disabled }: Props) {
     const [value, setValue] = useState("")
     const [showSuggestion, setShowSuggestion] = useState(false)
 
@@ -39,12 +40,12 @@ export function SubjectChoice({ onChange }: Props) {
 
     useEffect(() => {
         onChange?.(value)
-     // eslint-disable-next-line react-hooks/exhaustive-deps
-     }, [value])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value])
 
     return (
         <Command className="rounded-md border">
-            <CommandInput required value={value} onValueChange={(e) => setValue(e)} placeholder="Ketik Mata Pelajaran, Misal : IPA, Matematika, dll." onFocus={(e) => setShowSuggestion(true)} onBlur={hideSuggestionWithDelay} />
+            <CommandInput disabled={disabled} value={value} onValueChange={(e) => setValue(e)} placeholder="Ketik Mata Pelajaran, Misal : IPA, Matematika, dll." onFocus={(e) => setShowSuggestion(true)} onBlur={hideSuggestionWithDelay} />
             <CommandList hidden={!showSuggestion} className="max-h-40">
                 <CommandEmpty>Belum ada mapel untuk <span className="font-bold">{value}</span>, <button type="button">Tetap Cari</button></CommandEmpty>
                 <CommandGroup heading="Pilih Mata Pelajaran" onSelect={(s) => { }}>

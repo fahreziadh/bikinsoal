@@ -23,11 +23,14 @@ const handler = async (req: Request): Promise<Response> => {
     total_option: number;
   };
 
-  const total = 3;
+  const total = 5;
 
-  const content = `berikan ${total} soal ujian ${subject} untuk level ${grade.toLocaleLowerCase() === 'umum' ? 'umum' : `${grade}`} berupa ${total_option === 0 ? 'pertanyaan essay dan jawabannya' : `pertanyaan dan ${total_option} opsi jawaban`}. jawab dengan format berikut :(q)question${total_option > 0 && "(to)total option(o)option1(o)option2(o)option...."}(a)jawaban yang benar. tidak perlu manambahkan prefix pada tiap jawaban seperti a,b,c dan d.`
+  const main = `berikan ${total} soal ujian`
+  const sub = `untuk level ${grade.toLocaleLowerCase() === 'umum' ? 'umum' : `${grade}`}`
+  const option = `berupa ${total_option === 0 ? 'pertanyaan essay dan jawabannya' : `pertanyaan dan ${total_option} opsi jawaban`}`
+  const answer = `jawab dengan format berikut :(q)question${total_option === 0 ? "" : "(to)total option(o)A. option1(o)B. option2(o)C. option...."}(a)answear. ${total_option == 0 ? "" : 'answear = huruf yang menunjukkan jawaban yang benar contoh: (a)B.'}'}`
 
-  console.log(content);
+  const content = `${main} ${subject} ${sub} ${option}. ${answer}`
 
   const payload: OpenAIStreamPayload = {
     model: "gpt-3.5-turbo",
@@ -38,7 +41,7 @@ const handler = async (req: Request): Promise<Response> => {
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
-    max_tokens: 1000,
+    max_tokens: 3200,
     stream: true,
     n: 1,
   };

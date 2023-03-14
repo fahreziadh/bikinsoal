@@ -21,7 +21,7 @@ interface Props {
     session: Session | null
 }
 
-const LandingPage = ({ session }: Props) => {
+const MainPage = ({ session }: Props) => {
     const router = useRouter()
     const [subject, setSubject] = useState<string>("");
     const [grade, setGrade] = useState<string>("umum");
@@ -114,16 +114,16 @@ const LandingPage = ({ session }: Props) => {
                 <form className="mt-10 flex w-full flex-col gap-4">
                     <div className='flex flex-col gap-2'>
                         <Label htmlFor="message-2">Mata Pelajaran / Subject</Label>
-                        <SubjectChoice onChange={(value) => setSubject(value)} />
+                        <SubjectChoice disabled={isFetching} onChange={(value) => setSubject(value)} />
                     </div>
                     <div className='flex w-full flex-col justify-between gap-4 sm:flex-row sm:gap-2'>
                         <div className='flex w-full flex-col gap-2 sm:w-1/2'>
                             <Label>Tingkatan / Kelas</Label>
-                            <Grade onChange={(value) => setGrade(value)} />
+                            <Grade disabled={isFetching} onChange={(value) => setGrade(value)} />
                         </div>
                         <div className='flex w-full flex-col gap-2 sm:w-1/2'>
                             <Label>Pilihan Jawaban</Label>
-                            <Options onChange={(value) => { value != "essay" ? setTotalOption(Number(value)) : setTotalOption(0) }} />
+                            <Options disabled={isFetching} onChange={(value) => { value != "essay" ? setTotalOption(Number(value)) : setTotalOption(0) }} />
                         </div>
 
                     </div>
@@ -152,7 +152,7 @@ const LandingPage = ({ session }: Props) => {
                                         return null;
                                     }
                                     return (
-                                        <div key={index}><span>{String.fromCharCode(96 + index).toUpperCase()}. </span>{option}</div>
+                                        <div key={index}>{option}</div>
                                     )
                                 })}
                                 {question.split("(a)")[1] && <div className='mt-4'><span className='font-bold'>Jawaban : </span>{question.split("(a)")[1]}</div>}
@@ -165,4 +165,4 @@ const LandingPage = ({ session }: Props) => {
     )
 }
 
-export default LandingPage;
+export default MainPage;
