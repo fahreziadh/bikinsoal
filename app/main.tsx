@@ -138,6 +138,9 @@ const MainPage = ({ session, counter }: Props) => {
                 </form>
             </div>
             <div className='flex w-full flex-col gap-7 py-8'>
+                {isFetching && !responseBuffer && <div className='flex w-full flex-col text-center'>
+                    <h1 className='text-2xl font-bold text-[#1B1A1E]' ref={soalRef}>Tunggu sebentar...</h1>
+                </div>}
                 {responseBuffer.split("(q)").length > 1 && <div className='flex w-full flex-col text-center'>
                     <h1 className='text-2xl font-bold text-[#1B1A1E]' ref={soalRef}>Soal yang sudah di generate</h1>
                 </div>
