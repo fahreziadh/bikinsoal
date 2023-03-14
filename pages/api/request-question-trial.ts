@@ -29,8 +29,9 @@ const handler = async (req: Request): Promise<Response> => {
   const sub = `untuk level ${grade.toLocaleLowerCase() === 'umum' ? 'umum' : `${grade}`}`
   const option = `berupa ${total_option === 0 ? 'pertanyaan essay dan jawabannya' : `pertanyaan dan ${total_option} opsi jawaban`}`
   const answer = `jawab dengan format berikut :(q)question${total_option === 0 ? "" : "(to)total option(o)A. option1(o)B. option2(o)C. option...."}(a)answear. ${total_option == 0 ? "" : 'answear = huruf yang menunjukkan jawaban yang benar contoh: (a)B.'}'}`
+  const rules = `tidak perlu ada nomor seperti 1. pada setiap pertanyaan.`
 
-  const content = `${main} ${subject} ${sub} ${option}. ${answer}`
+  const content = `${main} ${subject} ${sub} ${option}. ${answer}. ${rules}`
 
   const payload: OpenAIStreamPayload = {
     model: "gpt-3.5-turbo",
