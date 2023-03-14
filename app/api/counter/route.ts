@@ -1,4 +1,4 @@
-import client from "@/lib/prismadb";
+import { prisma } from "@/lib/db";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -14,7 +14,7 @@ export const GET = async (req: NextRequest) => {
     const total = Number(searchParams.get('total')) || 0;
   
   
-    const { id } = await client?.questionGenerated.create({
+    const { id } = await prisma.questionGenerated.create({
         data: {
             total,
             user: {
