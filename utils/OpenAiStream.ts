@@ -1,8 +1,10 @@
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import {
     createParser,
     ParsedEvent,
     ReconnectInterval,
   } from "eventsource-parser";
+import { getServerSession } from "next-auth";
   
   export type ChatGPTAgent = "user" | "system";
   

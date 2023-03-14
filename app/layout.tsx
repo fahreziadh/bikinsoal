@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils"
 import "@/styles/globals.css"
 import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react';
+import Toaster from "@/components/toaster";
 
 export const metadata = {
   title: 'BikinSoal - Generate Soal Online',
@@ -57,10 +58,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn('bg-zinc-50', inter.className)}>
+        {/* @ts-expect-error Server Component */}
         <Navbar />
         <main>
           {children}
           <Analytics />
+          <Toaster />
         </main>
       </body>
     </html>

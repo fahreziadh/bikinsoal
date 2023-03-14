@@ -29,7 +29,7 @@ interface Props {
 
 export function SubjectChoice({ onChange }: Props) {
     const [value, setValue] = useState("")
-    const [showSuggestion, setShowSuggestion] = useState(true)
+    const [showSuggestion, setShowSuggestion] = useState(false)
 
     const hideSuggestionWithDelay = () => {
         setTimeout(() => {
@@ -44,7 +44,7 @@ export function SubjectChoice({ onChange }: Props) {
 
     return (
         <Command className="rounded-md border">
-            <CommandInput value={value} onValueChange={(e) => setValue(e)} placeholder="Ketik Mata Pelajaran, Misal : IPA, Matematika, dll." onFocus={(e) => setShowSuggestion(true)} onBlur={hideSuggestionWithDelay} />
+            <CommandInput required value={value} onValueChange={(e) => setValue(e)} placeholder="Ketik Mata Pelajaran, Misal : IPA, Matematika, dll." onFocus={(e) => setShowSuggestion(true)} onBlur={hideSuggestionWithDelay} />
             <CommandList hidden={!showSuggestion} className="max-h-40">
                 <CommandEmpty>Belum ada mapel untuk <span className="font-bold">{value}</span>, <button type="button">Tetap Cari</button></CommandEmpty>
                 <CommandGroup heading="Pilih Mata Pelajaran" onSelect={(s) => { }}>

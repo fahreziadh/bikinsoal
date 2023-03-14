@@ -1,4 +1,7 @@
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 import { OpenAIStream, OpenAIStreamPayload } from "utils/OpenAiStream";
+import { authOptions } from "./auth/[...nextauth]";
 
 
 if (!process.env.OPENAI_API_KEY) {
@@ -20,15 +23,18 @@ const handler = async (req: Request): Promise<Response> => {
     total_option: number;
   };
 
-  const total = 5;
+  const total = 3;
 
+  const content = `berikan ${total} soal ujian ${subject} untuk level ${grade.toLocaleLowerCase() === 'umum' ? 'umum' : `${grade}`} berupa ${total_option === 0 ? 'pertanyaan essay dan jawabannya' : `pertanyaan dan ${total_option} opsi jawaban`}. jawab dengan format berikut :(q)question${total_option > 0 && "(to)total option(o)option1(o)option2(o)option...."}(a)jawaban yang benar. tidak perlu manambahkan prefix pada tiap jawaban seperti a,b,c dan d.`
+
+  console.log(content);
 
   const payload: OpenAIStreamPayload = {
     model: "gpt-3.5-turbo",
     messages: [
-      { role: "user", content: `saya ingin membuat ${total} pertanyaan pelajaran ${subject} untuk murid kelas ${grade} dengan ${total_option} pilihan jawaban. buatkan dalam bentuk custom format berupa (q)question.(to)total options(o)options 1(o)options 2(o)option ..(a)answear. Tidak perlu ada prefix di pilihan jawaban.` }
+      { role: "user", content }
     ],
-    temperature: 0.7,
+    temperature: 0.4,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
