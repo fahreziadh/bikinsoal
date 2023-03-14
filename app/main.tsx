@@ -19,9 +19,10 @@ interface IParams {
 
 interface Props {
     session: Session | null
+    counter: number
 }
 
-const MainPage = ({ session }: Props) => {
+const MainPage = ({ session, counter }: Props) => {
     const router = useRouter()
     const [subject, setSubject] = useState<string>("");
     const [grade, setGrade] = useState<string>("umum");
@@ -92,12 +93,17 @@ const MainPage = ({ session }: Props) => {
             setResponseBuffer((prev) => prev + chunkValue);
         }
         scrollToBios();
+        addQuestionTotal()
         setIsFetching(false);
     };
 
-    useEffect(()=>{
+    const addQuestionTotal = async (total = 5) => {
+        await fetch("/api/counter?total=" + total)
+    }
+
+    useEffect(() => {
         reset()
-    },[totalOption])
+    }, [totalOption])
 
     return (
         <div className='container'>
@@ -110,7 +116,7 @@ const MainPage = ({ session }: Props) => {
                     quality={100}
                 />
                 <h1 className='mt-8 text-center text-[40px] font-bold leading-none text-[#1B1A1E] sm:text-[60px]'>Generate Soal Ujian di bantu AI</h1>
-                <h2 className='mt-8'><span className='font-bold'>120</span> Soal sudah di generate </h2>
+                <h2 className='mt-8'><span className='font-bold'>{counter}</span> Soal sudah di generate </h2>
                 <form className="mt-10 flex w-full flex-col gap-4">
                     <div className='flex flex-col gap-2'>
                         <Label htmlFor="message-2">Mata Pelajaran / Subject</Label>
