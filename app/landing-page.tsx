@@ -40,6 +40,7 @@ const LandingPage = ({ session }: Props) => {
     const onSubmit = async () => {
         if (!session?.user) {
             router.push("/api/auth/signin")
+            return;
         }
 
         if (subject === "") {
