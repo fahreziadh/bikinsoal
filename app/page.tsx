@@ -7,7 +7,7 @@ import MainPage from './main'
 export const revalidate = 60;
 
 const getCounter = async () => {
-  const counter = await client.questionGenerated.aggregate({
+  const counter = await client?.questionGenerated.aggregate({
     _sum: {
       total: true
     }

@@ -14,7 +14,7 @@ export const GET = async (req: NextRequest) => {
     const total = Number(searchParams.get('total')) || 0;
   
   
-    const { id } = await client.questionGenerated.create({
+    const { id } = await client?.questionGenerated.create({
         data: {
             total,
             user: {
