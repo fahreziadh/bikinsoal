@@ -7,7 +7,7 @@ import MainPage from './main'
 export const revalidate = 60;
 
 const getCounter = async () => {
-  const counter = await prisma?.questionGenerated.aggregate({
+  const counter = await prisma.questionGenerated.aggregate({
     _sum: {
       total: true
     }
