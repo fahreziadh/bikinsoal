@@ -181,10 +181,10 @@ const MainPage = ({ session, counter }: Props) => {
             </div>
             <div className='flex w-full flex-col gap-7 py-8'>
                 {isFetching && questions.length === 0 && (
-                    <h1 className='text-2xl font-bold text-[#1B1A1E]' ref={soalRef}>Tunggu sebentar...</h1>
+                    <h1 className='text-center text-2xl font-bold text-[#1B1A1E]' ref={soalRef}>Tunggu sebentar...</h1>
                 )}
                 {questions.length > 0 && (
-                    <h1 className='text-2xl font-bold text-[#1B1A1E]' ref={soalRef}>Soal yang sudah di generate</h1>
+                    <h1 className='text-center text-2xl font-bold text-[#1B1A1E]' ref={soalRef}>Soal yang sudah di generate</h1>
                 )}
 
                 {questions.map((q, index) => (

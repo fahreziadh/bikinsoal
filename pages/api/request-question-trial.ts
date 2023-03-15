@@ -23,12 +23,12 @@ const handler = async (req: Request): Promise<Response> => {
     total_option: number;
   };
 
-  const total = 3;
+  const total = 5;
 
   const main = `berikan ${total} soal ujian`
   const sub = `untuk ${grade.toLocaleLowerCase() === 'umum' ? 'umum' : `kelas ${grade}`}`
   const option = `berupa ${total_option === 0 ? 'pertanyaan essay dan jawabannya' : `pertanyaan dan ${total_option} opsi jawaban`}`
-  const answer = `gunakan format xml berikut: <q> pertanyaan </q> <options> a. opsi1 || b. opsi2 || c. opsi3 || d. opsi4 <options><a> jawaban sesuai opsi </a>`
+  const answer = `gunakan format xml berikut: <q> pertanyaan </q>${total_option > 0 ? "<options> a. opsi1 || b. opsi2 || c. opsi3 || d. opsi4 <options>" : null}<a> jawaban sesuai opsi </a>`
   const rules = `gunakan <break/> sebagai pembatas pada setiap pertanyaan. gunakan || untuk memisahkan opsi jawaban.`
 
   const content = `${main} ${subject} ${sub} ${option}. ${answer}. ${rules}`
