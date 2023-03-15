@@ -23,15 +23,16 @@ const handler = async (req: Request): Promise<Response> => {
     total_option: number;
   };
 
-  const total = 5;
+  const total = 3;
 
   const main = `berikan ${total} soal ujian`
-  const sub = `untuk level ${grade.toLocaleLowerCase() === 'umum' ? 'umum' : `${grade}`}`
+  const sub = `untuk ${grade.toLocaleLowerCase() === 'umum' ? 'umum' : `kelas ${grade}`}`
   const option = `berupa ${total_option === 0 ? 'pertanyaan essay dan jawabannya' : `pertanyaan dan ${total_option} opsi jawaban`}`
-  const answer = `jawab dengan format berikut :(q)question${total_option === 0 ? "" : "(to)total option of answear(o)A. option1(o)B. option2(o)C. option...."}(a)answear. ${total_option == 0 ? "" : 'answear = huruf yang menunjukkan jawaban yang benar contoh: (a)B.'}'}`
-  const rules = `tidak perlu ada nomor seperti 1. pada setiap pertanyaan.`
+  const answer = `gunakan format xml berikut: <q> pertanyaan </q> <options> a. opsi1 || b. opsi2 || c. opsi3 || d. opsi4 <options><a> jawaban sesuai opsi </a>`
+  const rules = `gunakan <break/> sebagai pembatas pada setiap pertanyaan. gunakan || untuk memisahkan opsi jawaban.`
 
   const content = `${main} ${subject} ${sub} ${option}. ${answer}. ${rules}`
+  console.log(content);
 
   const payload: OpenAIStreamPayload = {
     model: "gpt-3.5-turbo",
@@ -42,7 +43,7 @@ const handler = async (req: Request): Promise<Response> => {
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
-    max_tokens: 3200,
+    max_tokens: 2000,
     stream: true,
     n: 1,
   };

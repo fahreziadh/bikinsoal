@@ -56,8 +56,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={cn('bg-zinc-50', inter.className)}>
+    <html lang="en" className="light">
+      <body className={cn('dark:bg-[#0c0c0c] dark:text-white', inter.className)}>
         {/* @ts-expect-error Server Component */}
         <Navbar />
         <main>

@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useReducer, useRef, useState } from 'react'
 import { SubjectChoice } from './subject';
 import { useSession } from "next-auth/react"
 import { Session } from 'next-auth';
@@ -22,13 +22,21 @@ interface Props {
     counter: number
 }
 
+interface IQuestions {
+    id: number;
+    question: string;
+    options: string[];
+    answer: string;
+}
+
+
 const MainPage = ({ session, counter }: Props) => {
     const router = useRouter()
-    const [subject, setSubject] = useState<string>("");
-    const [grade, setGrade] = useState<string>("umum");
-    const [totalOption, setTotalOption] = useState<number>(0);
+    const [subject, setSubject] = useState<string>("matematika");
+    const [grade, setGrade] = useState<string>("sd kelas 3");
+    const [totalOption, setTotalOption] = useState<number>(4);
+    const [questions, setQuestions] = useState<IQuestions[]>([]);
 
-    const [responseBuffer, setResponseBuffer] = useState<string>("");
     const [isFetching, setIsFetching] = useState<boolean>(false);
     const soalRef = useRef<null | HTMLDivElement>(null);
 
@@ -52,7 +60,7 @@ const MainPage = ({ session, counter }: Props) => {
     }
 
     const reset = () => {
-        setResponseBuffer("");
+        setQuestions([])
     }
 
     const generate = async ({ grade = "umum", subject, total_option = 4 }: IParams) => {
@@ -83,15 +91,49 @@ const MainPage = ({ session, counter }: Props) => {
 
         const decoder = new TextDecoder();
         const reader = data.getReader();
+        let buffer = ""
         let done = false;
+
+        let tempQuestion: IQuestions[] = [{
+            id: 0,
+            question: "",
+            options: [''],
+            answer: ""
+        }]
 
         while (!done) {
             const { value, done: doneReading } = await reader.read();
             done = doneReading;
             const chunkValue = decoder.decode(value);
+            buffer += chunkValue;
 
-            setResponseBuffer((prev) => prev + chunkValue);
+            // remember the format is <q> pertanyaan </q> <options><o>opsi1<o><o>opsi..</o/><options> <a> opsi yang benar </a> and </break> is the end of question
+            buffer.split("<break/>").map((object, index) => {
+                //format looks like  <q> Jika a = 5 dan b = 3, berapa hasil dari 2a + b ? </q> <options>A|B|C|D</options> <a> 13 </a>
+                const question = object.split("<q>")[1]?.split("</q>")[0]
+                const options = object.split("<options>")[1]?.split("</options>")[0]
+                const answer = object.split("<a>")[1]?.split("</a>")[0]
+                if (!question && !options && !answer) {
+                    return
+                }
+
+                tempQuestion[index] = {
+                    id: index,
+                    question,
+                    options: options?.split("||"),
+                    answer
+                }
+                // add tempQuestion to setQuestions with the previous state of questions with the id as index
+                setQuestions((prevQuestions) => {
+                    const updatedQuestions = [...prevQuestions];
+                    updatedQuestions[index] = tempQuestion[index];
+                    return updatedQuestions;
+                }
+                )
+
+            })
         }
+
         scrollToBios();
         addQuestionTotal()
         setIsFetching(false);
@@ -120,7 +162,7 @@ const MainPage = ({ session, counter }: Props) => {
                 <form className="mt-10 flex w-full flex-col gap-4">
                     <div className='flex flex-col gap-2'>
                         <Label htmlFor="message-2">Mata Pelajaran / Subject</Label>
-                        <SubjectChoice disabled={isFetching} onChange={(value) => setSubject(value)} />
+                        <SubjectChoice disabled={isFetching} onChange={(value) => setSubject(value)} value={subject} />
                     </div>
                     <div className='flex w-full flex-col justify-between gap-4 sm:flex-row sm:gap-2'>
                         <div className='flex w-full flex-col gap-2 sm:w-1/2'>
@@ -138,39 +180,31 @@ const MainPage = ({ session, counter }: Props) => {
                 </form>
             </div>
             <div className='flex w-full flex-col gap-7 py-8'>
-                {isFetching && !responseBuffer && <div className='flex w-full flex-col text-center'>
+                {isFetching && questions.length === 0 && (
                     <h1 className='text-2xl font-bold text-[#1B1A1E]' ref={soalRef}>Tunggu sebentar...</h1>
-                </div>}
-                {responseBuffer.split("(q)").length > 1 && <div className='flex w-full flex-col text-center'>
+                )}
+                {questions.length > 0 && (
                     <h1 className='text-2xl font-bold text-[#1B1A1E]' ref={soalRef}>Soal yang sudah di generate</h1>
-                </div>
-                }
-                {responseBuffer.split("(q)").map((question, index) => {
-                    if (index === 0) {
-                        return null;
-                    }
-                    return (
-                        <div key={index} className="flex w-full flex-col rounded-lg bg-white p-7 shadow-md">
-                            <div className='inline-flex gap-2'>
-                                <span className='flex aspect-square h-6 w-6 items-center justify-center rounded-full bg-black text-sm text-white'>{index}</span>
-                                <span className='font-bold'>{totalOption > 0 ? question.split("(to)")[0] : question.split("(a)")[0]}</span>
-                            </div>
-                            <div className='mt-4 flex flex-col gap-4 pl-7 text-sm'>
-                                {question.split("(a)")[0].split("(o)").map((option, index) => {
-                                    if (index === 0) {
-                                        return null;
-                                    }
-                                    return (
-                                        <div key={index}>{option}</div>
-                                    )
-                                })}
-                                {question.split("(a)")[1] && <div className='mt-4'><span className='font-bold'>Jawaban : </span>{question.split("(a)")[1]}</div>}
-                            </div>
+                )}
+
+                {questions.map((q, index) => (
+                    <div key={index} className="flex w-full flex-col rounded-lg bg-white p-7 shadow-md">
+                        <div className='inline-flex gap-2'>
+                            <span className='flex aspect-square h-6 w-6 items-center justify-center rounded-full bg-black text-sm text-white'>{index + 1}</span>
+                            <span className='font-bold'>{q?.question}</span>
                         </div>
-                    )
-                })}
+                        <div className='mt-4 flex flex-col gap-4 pl-7 text-sm'>
+                            {q?.options?.map((option, index) => {
+                                return (
+                                    <div key={index}>{option}</div>
+                                )
+                            })}
+                            {q?.answer && <div className='mt-4'><span className='font-bold'>Jawaban : </span>{q?.answer}</div>}
+                        </div>
+                    </div>
+                ))}
             </div>
-        </div>
+        </div >
     )
 }
 
