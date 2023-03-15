@@ -19,38 +19,31 @@ import {
 } from "@/components/ui/popover"
 
 const options = [
-  "2",
-  "3",
-  "4",
-  "5",
-  "Essay"
+  "Essay",
+  "Pilihan Ganda",
 ]
 
 interface Props {
-  onChange?: (value: string) => void
+  onChange?: (haveOptions: boolean) => void
+  haveOptions?: boolean
   disabled?: boolean
 }
 
-export function Options({ onChange, disabled }: Props) {
+export function Options({ onChange, disabled, haveOptions }: Props) {
   const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
-
-  React.useEffect(() => {
-    onChange?.(value)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value])
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
+          disabled={disabled}
           variant="outline"
           role="combobox"
           aria-expanded={open}
           className="w-full justify-between bg-white"
         >
-          {value
-            ? value
+          {haveOptions
+            ? "Pilihan Ganda"
             : "Essay"}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -60,21 +53,21 @@ export function Options({ onChange, disabled }: Props) {
           <CommandInput disabled={disabled} placeholder="Cari pilihan..." />
           <CommandEmpty>No framework found.</CommandEmpty>
           <CommandGroup>
-            {options.map((framework) => (
+            {options.map((option) => (
               <CommandItem
-                key={framework}
+                key={option}
                 onSelect={(currentValue) => {
-                  setValue(currentValue === value ? "" : currentValue)
+                  onChange?.(currentValue === 'pilihan ganda' ? true : false)
                   setOpen(false)
                 }}
               >
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    value === framework ? "opacity-100" : "opacity-0"
+                    option === (haveOptions ? 'Pilihan Ganda' : 'Essay') ? "opacity-100" : "opacity-0"
                   )}
                 />
-                {framework}
+                {option}
               </CommandItem>
             ))}
           </CommandGroup>

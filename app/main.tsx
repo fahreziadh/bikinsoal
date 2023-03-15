@@ -10,11 +10,15 @@ import { Grade } from './grade';
 import { Options } from './options';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { GradeV2 } from './grade-v2';
+import { Textarea } from '@/components/ui/textarea';
+import { mataPelajaran } from '@/lib/mapel';
 
 interface IParams {
     subject: string;
     grade: string;
-    total_option?: number;
+    have_options?: boolean;
 }
 
 interface Props {
@@ -34,8 +38,9 @@ const MainPage = ({ session, counter }: Props) => {
     const router = useRouter()
     const [subject, setSubject] = useState<string>("");
     const [grade, setGrade] = useState<string>("umum");
-    const [totalOption, setTotalOption] = useState<number>(0);
+    const [haveOptions, setHaveOptions] = useState(false);
     const [questions, setQuestions] = useState<IQuestions[]>([]);
+    const [topic, setTopic] = useState<string>("");
 
     const [isFetching, setIsFetching] = useState<boolean>(false);
     const soalRef = useRef<null | HTMLDivElement>(null);
@@ -56,14 +61,14 @@ const MainPage = ({ session, counter }: Props) => {
             toast("Pilih mata pelajaran terlebih dahulu", { position: 'bottom-center' })
             return;
         }
-        await generate({ subject, grade, total_option: totalOption });
+        await generate({ subject, grade, have_options: haveOptions });
     }
 
     const reset = () => {
         setQuestions([])
     }
 
-    const generate = async ({ grade = "umum", subject, total_option = 4 }: IParams) => {
+    const generate = async ({ grade = "umum", subject, have_options = false }: IParams) => {
         setIsFetching(true);
         reset()
         const response = await fetch("/api/request-question-trial", {
@@ -74,7 +79,8 @@ const MainPage = ({ session, counter }: Props) => {
             body: JSON.stringify({
                 subject: subject,
                 grade: grade,
-                total_option: total_option,
+                have_options: haveOptions,
+                topic: topic
             }),
         });
 
@@ -145,7 +151,7 @@ const MainPage = ({ session, counter }: Props) => {
 
     useEffect(() => {
         reset()
-    }, [totalOption])
+    }, [haveOptions, grade, subject])
 
     return (
         <div className='container'>
@@ -159,24 +165,35 @@ const MainPage = ({ session, counter }: Props) => {
                 />
                 <h1 className='mt-8 text-center text-[40px] font-bold leading-none text-[#1B1A1E] sm:text-[60px]'>Generate Soal Ujian di bantu AI</h1>
                 <h2 className='mt-8'><span className='font-bold'>{counter}</span> Soal sudah di generate </h2>
-                <form className="mt-10 flex w-full flex-col gap-4">
+                <form className="mt-10 flex w-full flex-col">
                     <div className='flex flex-col gap-2'>
                         <Label htmlFor="message-2">Mata Pelajaran / Subject</Label>
                         <SubjectChoice disabled={isFetching} onChange={(value) => setSubject(value)} value={subject} />
                     </div>
-                    <div className='flex w-full flex-col justify-between gap-4 sm:flex-row sm:gap-2'>
-                        <div className='flex w-full flex-col gap-2 sm:w-1/2'>
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: subject ? 1 : 0, height: subject ? "auto" : 0 }}
+                        className='flex flex-col gap-2'>
+                        <Label className='mt-4'>Topik Terkait</Label>
+                        <Textarea onChange={(e) => setTopic(e.target.value)} value={topic} disabled={isFetching} placeholder={`Seperti : ${!subject ? "materi pelajaran, kata kunci, dll." : mataPelajaran.find((v) => v.nama === subject)?.subTopik}`} />
+                        <span className='text-xs text-zinc-500'>Kamu bisa memasukkan lebih dari satu topik.</span>
+                    </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: subject ? 1 : 0, height: subject ? "auto" : 0 }}
+                        className='flex w-full flex-col justify-between gap-4 sm:flex-row sm:gap-2'>
+
+                        <div className='mt-4 flex w-full flex-col gap-2 sm:w-1/2'>
                             <Label>Tingkatan / Kelas</Label>
-                            <Grade disabled={isFetching} onChange={(value) => setGrade(value)} />
+                            <GradeV2 disabled={isFetching} onChange={setGrade} value={grade} />
                         </div>
-                        <div className='flex w-full flex-col gap-2 sm:w-1/2'>
+                        <div className='mt-4 flex w-full flex-col gap-2 sm:w-1/2'>
                             <Label>Pilihan Jawaban</Label>
-                            <Options disabled={isFetching} onChange={(value) => { value != "essay" ? setTotalOption(Number(value)) : setTotalOption(0) }} />
+                            <Options disabled={isFetching} onChange={setHaveOptions} haveOptions={haveOptions} />
                         </div>
 
-                    </div>
-
-                    <Button disabled={isFetching} className='mt-2' onClick={onSubmit} type="button">{isFetching ? "Sedang Menulis..." : "Generate Soal 📃"}</Button>
+                    </motion.div>
+                    <Button disabled={isFetching} onClick={onSubmit} className="mt-4" type="button">{isFetching ? "Sedang Menulis..." : "Generate Soal 📃"}</Button>
                 </form>
             </div>
             <div className='flex w-full flex-col gap-7 py-8'>

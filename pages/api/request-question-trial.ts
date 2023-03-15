@@ -17,22 +17,23 @@ const handler = async (req: Request): Promise<Response> => {
     return new Response("Method not allowed", { status: 405 });
   }
 
-  const { subject, grade, total_option = 4 } = (await req.json()) as {
+  const { subject, grade, have_options = false, topic } = (await req.json()) as {
     subject: string;
     grade: string;
-    total_option: number;
+    have_options: number;
+    topic: string;
   };
 
   const total = 5;
 
   const main = `berikan ${total} soal ujian`
-  const sub = `untuk ${grade.toLocaleLowerCase() === 'umum' ? 'umum' : `kelas ${grade}`}`
-  const option = `berupa ${total_option === 0 ? 'pertanyaan essay dan jawabannya' : `pertanyaan dan ${total_option} opsi jawaban`}`
-  const answer = `gunakan format xml berikut: <q> pertanyaan </q>${total_option > 0 ? "<options> a. opsi1 || b. opsi2 || c. opsi3 || d. opsi4 <options>" : null}<a> jawaban sesuai opsi </a>`
+  const _grade = `untuk ${grade.toLocaleLowerCase() === 'umum' ? 'umum' : `${grade}`}`
+  const _topic = topic ? `dengan topik berkaitan dengan: ${topic}` : ''
+  const option = `berupa ${have_options ? `pertanyaan dan opsi jawaban` : 'pertanyaan essay dan jawabannya'}`
+  const answer = `gunakan format xml berikut: <q> pertanyaan </q>${have_options ? "<options> a. opsi1 || b. opsi2 || c. opsi3 || d. opsi4 <options>" : null}<a> jawaban sesuai opsi </a>`
   const rules = `gunakan <break/> sebagai pembatas pada setiap pertanyaan. gunakan || untuk memisahkan opsi jawaban.`
 
-  const content = `${main} ${subject} ${sub} ${option}. ${answer}. ${rules}`
-  console.log(content);
+  const content = `${main} ${subject} ${_grade} ${_topic} ${option}. ${answer}. ${rules}`
 
   const payload: OpenAIStreamPayload = {
     model: "gpt-3.5-turbo",
