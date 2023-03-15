@@ -170,7 +170,7 @@ export const mapel = mapelRef.filter((m, index) => {
     return mapelRef.indexOf(m) === index;
 });
 
-const mataPelajaran = [
+export const mataPelajaran = [
     {
       nama: 'Matematika',
       subTopik: ['geometri', 'aljabar', 'statistika']

@@ -21,7 +21,7 @@ import {
     CommandShortcut,
 } from "@/components/ui/command"
 import { useEffect, useRef, useState } from "react"
-import { mapel } from "@/lib/mapel"
+import { mataPelajaran } from "@/lib/mapel"
 
 interface Props {
     onChange?: (value: string) => void
@@ -44,9 +44,9 @@ export function SubjectChoice({ onChange, value, disabled }: Props) {
             <CommandList hidden={!showSuggestion} className="max-h-40">
                 <CommandEmpty>Belum ada mapel untuk <span className="font-bold">{value}</span>, <button type="button">Tetap Cari</button></CommandEmpty>
                 <CommandGroup heading="Pilih Mata Pelajaran" onSelect={(s) => { }}>
-                    {mapel.map((item) => (
-                        <CommandItem key={item} onSelect={(currentValue) => { onChange?.(currentValue); setShowSuggestion(false) }}>
-                            <span>{item}</span>
+                    {mataPelajaran.map((item) => (
+                        <CommandItem key={item.nama} onSelect={(currentValue) => { onChange?.(currentValue); setShowSuggestion(false) }}>
+                            <span>{item.nama}</span>
                         </CommandItem>
                     ))}
                 </CommandGroup>
