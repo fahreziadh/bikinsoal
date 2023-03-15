@@ -32,9 +32,9 @@ interface IQuestions {
 
 const MainPage = ({ session, counter }: Props) => {
     const router = useRouter()
-    const [subject, setSubject] = useState<string>("matematika");
-    const [grade, setGrade] = useState<string>("sd kelas 3");
-    const [totalOption, setTotalOption] = useState<number>(4);
+    const [subject, setSubject] = useState<string>("");
+    const [grade, setGrade] = useState<string>("umum");
+    const [totalOption, setTotalOption] = useState<number>(0);
     const [questions, setQuestions] = useState<IQuestions[]>([]);
 
     const [isFetching, setIsFetching] = useState<boolean>(false);
