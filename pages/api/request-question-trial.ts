@@ -17,14 +17,14 @@ const handler = async (req: Request): Promise<Response> => {
     return new Response("Method not allowed", { status: 405 });
   }
 
-  const { subject, grade, have_options = false, topic } = (await req.json()) as {
+  const { subject, grade, have_options = false, topic, total = 5 } = (await req.json()) as {
     subject: string;
     grade: string;
     have_options: number;
     topic: string;
+    total: number;
   };
 
-  const total = 5;
 
   const main = `berikan ${total} soal ujian`
   const _grade = `untuk ${grade.toLocaleLowerCase() === 'umum' ? 'umum' : `${grade}`}`
@@ -44,7 +44,7 @@ const handler = async (req: Request): Promise<Response> => {
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
-    max_tokens: 2000,
+    max_tokens: 4000,
     stream: true,
     n: 1,
   };

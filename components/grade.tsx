@@ -89,7 +89,7 @@ interface Props {
     disabled?: boolean
 }
 
-export function GradeV2({ onChange, value, disabled = false }: Props) {
+export function Grade({ onChange, value, disabled = false }: Props) {
     const [open, setOpen] = React.useState(false)
 
     return (
