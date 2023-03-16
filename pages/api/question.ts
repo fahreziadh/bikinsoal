@@ -51,7 +51,7 @@ const handler = async (req: Request) => {
             top_p: 1,
             frequency_penalty: 0,
             presence_penalty: 0,
-            max_tokens: 4000,
+            max_tokens: 3500,
             stream: false,
             n: 1,
         }),
