@@ -15,6 +15,9 @@ import { Input } from '@/components/ui/input';
 import { Grade } from '../components/grade';
 import ItemQuestion from '@/components/item-question';
 import { Question } from '@/types/question';
+import { Slider } from '@/components/ui/slider';
+import LoadingItemQuestion from '@/components/loading-item-question';
+import useSWR from 'swr'
 
 interface IParams {
     subject: string;
@@ -25,18 +28,23 @@ interface IParams {
 
 interface Props {
     session: Session | null
-    counter: number
 }
 
-const MainPage = ({ session, counter }: Props) => {
+const fetcher = (url) => fetch(url).then(res => res.json())
+
+const MainPage = ({ session }: Props) => {
     const router = useRouter()
     const [subject, setSubject] = useState<string>("");
     const [grade, setGrade] = useState<string>("umum");
     const [haveOptions, setHaveOptions] = useState(false);
     const [questions, setQuestions] = useState<Question[]>([]);
     const [topic, setTopic] = useState<string>("");
-    const [total, setTotal] = useState<number>(0);
-    const [state, setState] = useState<'onSetTotal' | 'onQuestionGenerated' | 'onLoading' | ''>('')
+    const [isLoading, setIsLoading] = useState(false);
+    const [total, setTotal] = useState(0)
+
+
+    const { data: counter, error } = useSWR('/api/getcounter', fetcher)
+
 
     const soalRef = useRef<null | HTMLDivElement>(null);
 
@@ -53,7 +61,6 @@ const MainPage = ({ session, counter }: Props) => {
         }
 
         if (total === 0) {
-            setState('onSetTotal')
             return;
         }
 
@@ -69,9 +76,9 @@ const MainPage = ({ session, counter }: Props) => {
     }
 
     const generate = async ({ grade = "umum", subject, have_options = false, total }: IParams) => {
-        setState('onLoading');
+        setIsLoading(true)
         reset()
-        const response = await fetch("/api/request-question-trial", {
+        const response = await fetch("/api/question", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -90,61 +97,14 @@ const MainPage = ({ session, counter }: Props) => {
         }
 
         // This data is a ReadableStream
-        const data = response.body;
+        const { json: { choices } } = await response.json()
+        const data = choices[0].message.content.trim()
+        const jsonParsed = JSON.parse(data)
 
-        if (!data) {
-            return;
-        }
-
-        const decoder = new TextDecoder();
-        const reader = data.getReader();
-        let buffer = ""
-        let done = false;
-
-        let tempQuestion: Question[] = [{
-            id: 0,
-            question: "",
-            options: [''],
-            answer: ""
-        }]
-
-        while (!done) {
-            const { value, done: doneReading } = await reader.read();
-            done = doneReading;
-            const chunkValue = decoder.decode(value);
-            buffer += chunkValue;
-
-            // remember the format is <q> pertanyaan </q> <options><o>opsi1<o><o>opsi..</o/><options> <a> opsi yang benar </a> and </break> is the end of question
-            buffer.split("<break/>").map((object, index) => {
-                //format looks like  <q> Jika a = 5 dan b = 3, berapa hasil dari 2a + b ? </q> <options>A|B|C|D</options> <a> 13 </a>
-                const question = object.split("<q>")[1]?.split("</q>")[0]
-                const options = object.split("<options>")[1]?.split("</options>")[0]
-                const answer = object.split("<a>")[1]?.split("</a>")[0]
-                if (!question && !options && !answer) {
-                    return
-                }
-
-                tempQuestion[index] = {
-                    id: index,
-                    question,
-                    options: options?.split("||"),
-                    answer
-                }
-                // add tempQuestion to setQuestions with the previous state of questions with the id as index
-                setQuestions((prevQuestions) => {
-                    const updatedQuestions = [...prevQuestions];
-                    updatedQuestions[index] = tempQuestion[index];
-                    return updatedQuestions;
-                }
-                )
-
-            })
-        }
-
+        setQuestions(jsonParsed)
+        setIsLoading(false)
         scrollToBios();
         addQuestionTotal()
-        setState('onQuestionGenerated');
-        setTotal(0)
     };
 
     const addQuestionTotal = async (total = 5) => {
@@ -166,18 +126,25 @@ const MainPage = ({ session, counter }: Props) => {
                     quality={100}
                 />
                 <h1 className='mt-8 text-center text-[40px] font-bold leading-none text-[#1B1A1E] sm:text-[60px]'>Generate Soal Ujian di bantu AI</h1>
-                <h2 className='mt-8'><span className='font-bold'>{counter}</span> Soal sudah di generate </h2>
+                <h2 className='mt-8 inline-flex gap-2'>
+                    <motion.div
+                        animate={{ scale: [1, 1.5, 1], opacity: [0, 1] }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <span className='font-bold'>{counter?.counter}</span>
+                    </motion.div>
+                    Soal sudah di generate </h2>
                 <form className="mt-10 flex w-full flex-col">
                     <div className='flex flex-col gap-2'>
                         <Label htmlFor="message-2">Mata Pelajaran / Subject</Label>
-                        <SubjectChoice disabled={state === 'onLoading'} onChange={(value) => setSubject(value)} value={subject} />
+                        <SubjectChoice disabled={isLoading} onChange={(value) => setSubject(value)} value={subject} />
                     </div>
                     <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: subject ? 1 : 0, height: subject ? "auto" : 0, display: subject ? "flex" : "none" }}
                         className='flex flex-col gap-2'>
                         <Label className='mt-4'>Topik Terkait</Label>
-                        <Textarea onChange={(e) => setTopic(e.target.value)} value={topic} disabled={state === 'onLoading'} placeholder={`Seperti : ${!subject ? "materi pelajaran, kata kunci, dll." : mataPelajaran.find((v) => v.nama === subject)?.subTopik}`} />
+                        <Textarea onChange={(e) => setTopic(e.target.value)} value={topic} disabled={isLoading} placeholder={`Seperti : ${!subject ? "materi pelajaran, kata kunci, dll." : mataPelajaran.find((v) => v.nama === subject)?.subTopik}`} />
                         <span className='text-xs text-zinc-500'>Kamu bisa memasukkan lebih dari satu topik.</span>
                     </motion.div>
                     <motion.div
@@ -187,47 +154,54 @@ const MainPage = ({ session, counter }: Props) => {
 
                         <div className='mt-4 flex w-full flex-col gap-2 sm:w-1/2'>
                             <Label>Tingkatan / Kelas</Label>
-                            <Grade disabled={state === 'onLoading'} onChange={setGrade} value={grade} />
+                            <Grade disabled={isLoading} onChange={setGrade} value={grade} />
                         </div>
                         <div className='mt-4 flex w-full flex-col gap-2 sm:w-1/2'>
                             <Label>Pilihan Jawaban</Label>
-                            <Options disabled={state === 'onLoading'} onChange={setHaveOptions} haveOptions={haveOptions} />
+                            <Options disabled={isLoading} onChange={setHaveOptions} haveOptions={haveOptions} />
                         </div>
+                    </motion.div>
 
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: subject ? 1 : 0, height: subject ? "auto" : 0, display: subject ? "flex" : "none" }}
+                        className='flex w-full flex-col justify-between gap-4 sm:flex-row sm:gap-2'>
+
+                        <div className='mt-4 flex w-full flex-col gap-2'>
+                            <Label>Jumlah Soal <span className='text-lg font-bold'>--{total}--</span></Label>
+                            <Slider disabled={isLoading} defaultValue={[0]} max={20} step={5} onValueChange={(e) => setTotal(e[0])} />
+                        </div>
                     </motion.div>
                     <div className='mt-4 flex flex-row items-center justify-center gap-2'>
                         <Button
+                            className='h-14 bg-emerald-500 text-lg hover:bg-emerald-400'
                             size={"lg"}
-                            disabled={state === 'onLoading'}
+                            disabled={isLoading}
                             onClick={onSubmit}
                             type="button">
-                            {!session ? "Coba Gratis Sekarang" : null}
-                            {state === 'onLoading' ? "Sedang Menulis..." : null}
-                            {state === 'onQuestionGenerated' ? "Generate Lagi" : null}
-                            {total === 0 && state === 'onSetTotal' ? "Pilih Jumlah Soal ->" : null}
-                            {state === '' && session ? "Generate" : null}
-                            {total > 0 && state === 'onSetTotal' ? `Generate ${total} Soal` : null}
+                            {isLoading ? "Sedang Menulis..." : "Generate"}
                         </Button>
-                        <motion.div initial={{ display: 'none', opacity: 0 }} transition={{ ease: 'easeInOut' }} animate={{ display: state === 'onSetTotal' ? 'flex' : 'none', opacity: state === 'onSetTotal' ? 1 : 0 }} className='inline-flex gap-2'>
-                            <Button type='button' className='text-xs' variant="outline" onClick={() => setTotal(5)}>5 Soal</Button>
-                            {/* <Button type='button' disabled={false} className='text-xs' variant="outline" onClick={() => setTotal(10)}>10 Soal 👑</Button>
-                            <Button type='button' disabled={false} className='text-xs' variant="outline" onClick={() => setTotal(15)}>15 Soal 👑</Button>
-                            <Button type='button' disabled={false} className='text-xs' variant="outline" onClick={() => setTotal(20)}>20 Soal 👑</Button> */}
-                        </motion.div>
                     </div>
                 </form>
             </div>
             <div className='flex w-full flex-col gap-7 py-8'>
-                {state === 'onLoading' && questions.length === 0 && (
+                {isLoading && questions.length === 0 && (
                     <h1 className='text-center text-2xl font-bold text-[#1B1A1E]' ref={soalRef}>Tunggu sebentar...</h1>
                 )}
                 {questions.length > 0 && (
                     <h1 className='text-center text-2xl font-bold text-[#1B1A1E]' ref={soalRef}>Soal yang sudah di generate</h1>
                 )}
 
+
                 {questions.map((q, index) => (
                     <ItemQuestion question={q} index={index + 1} key={index} />
                 ))}
+
+                {isLoading && questions.length === 0 && (
+                    [1, 2, 3, 4, 5].map(item => (
+                        <LoadingItemQuestion key={item} />
+                    ))
+                )}
             </div>
         </div >
     )

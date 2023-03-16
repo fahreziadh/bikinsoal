@@ -59,6 +59,7 @@
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.0",
     "sharp": "^0.31.3",
+    "swr": "^2.1.0",
     "tailwind-merge": "^1.8.0",
     "tailwindcss-animate": "^1.0.5"
   },
