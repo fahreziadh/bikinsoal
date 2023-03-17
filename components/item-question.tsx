@@ -1,4 +1,3 @@
-import { Question } from '@/types/question'
 import React from 'react'
 
 interface Props {

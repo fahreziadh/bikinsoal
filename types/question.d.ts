@@ -1,4 +1,4 @@
-export type Question = {
+type Question = {
     question: string;
     options: string[];
     answer: string;

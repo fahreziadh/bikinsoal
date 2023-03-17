@@ -35,7 +35,8 @@ const handler = async (req: Request) => {
     const format = `gunakan format json berikut: ${have_options ? '[{question: "pertanyaan", options: ["opsi1", "opsi2", "opsi3", "opsi4"], answer: "jawaban sesuai opsi"}]' : '[{question: "pertanyaan", answer: "jawaban"}]'}`
 
     const content = `${main} ${subject} ${_grade} ${_topic} ${option} ${format}`
-
+    console.log(content);
+    
     const res = await fetch("https://api.openai.com/v1/chat/completions", {
         headers: {
             "Content-Type": "application/json",
@@ -47,7 +48,7 @@ const handler = async (req: Request) => {
             messages: [
                 { role: "user", content }
             ],
-            temperature: 0.7,
+            temperature: 0,
             top_p: 1,
             frequency_penalty: 0,
             presence_penalty: 0,
@@ -58,6 +59,8 @@ const handler = async (req: Request) => {
     });
 
     const json = await res.json();
+
+    
 
 
     return NextResponse.json({ json })

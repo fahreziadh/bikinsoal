@@ -38,7 +38,7 @@ import { getServerSession } from "next-auth";
       method: "POST",
       body: JSON.stringify(payload),
     });
-  
+
     const stream = new ReadableStream({
       async start(controller) {
         // callback
@@ -53,7 +53,6 @@ import { getServerSession } from "next-auth";
             try {
               const json = JSON.parse(data);
               const text = json.choices[0].delta?.content || '';
-              
               const queue = encoder.encode(text);
               controller.enqueue(queue);
             } catch (e) {

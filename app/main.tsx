@@ -14,7 +14,6 @@ import { mataPelajaran } from '@/lib/mapel';
 import { Input } from '@/components/ui/input';
 import { Grade } from '../components/grade';
 import ItemQuestion from '@/components/item-question';
-import { Question } from '@/types/question';
 import { Slider } from '@/components/ui/slider';
 import LoadingItemQuestion from '@/components/loading-item-question';
 import useSWR from 'swr'
@@ -43,7 +42,7 @@ const MainPage = ({ session }: Props) => {
     const [total, setTotal] = useState(0)
 
 
-    const { data: counter, error } = useSWR('/api/getcounter', fetcher)
+    const { data: counter, error } = useSWR('/api/getcounter', fetcher, { refreshInterval: 10000 })
 
 
     const soalRef = useRef<null | HTMLDivElement>(null);
@@ -68,17 +67,18 @@ const MainPage = ({ session }: Props) => {
             toast("Pilih mata pelajaran terlebih dahulu", { position: 'bottom-center' })
             return;
         }
-        await generate({ subject, grade, have_options: haveOptions, total: total });
+        await generate();
     }
 
     const reset = () => {
         setQuestions([])
     }
 
-    const generate = async ({ grade = "umum", subject, have_options = false, total }: IParams) => {
+    const generate = async () => {
         setIsLoading(true)
         reset()
-        const response = await fetch("/api/question", {
+
+        const response = await fetch("/api/request-question-trial", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -97,11 +97,31 @@ const MainPage = ({ session }: Props) => {
         }
 
         // This data is a ReadableStream
-        const { json: { choices } } = await response.json()
-        const data = choices[0].message.content.trim()
-        const jsonParsed = JSON.parse(data)
+        const data = response.body;
 
-        setQuestions(jsonParsed)
+        if (!data) {
+            return;
+        }
+        const decoder = new TextDecoder();
+        const reader = data.getReader();
+        let buffer = ""
+        let done = false;
+
+        while (!done) {
+            const { value, done: doneReading } = await reader.read();
+            done = doneReading;
+            const chunkValue = decoder.decode(value);
+
+            buffer += chunkValue;
+        }
+
+        try {
+            const questions = JSON.parse(buffer);
+            setQuestions(questions);
+        } catch (error) {
+            console.log(error);
+        }
+
         setIsLoading(false)
         scrollToBios();
         addQuestionTotal()
