@@ -34,7 +34,7 @@ const ButtonSession = ({ session }: Props) => {
                     </DropdownMenuContent>
                 </DropdownMenu>}
             {session?.user == null &&
-                <Button onClick={() => signIn() }>Login</Button>
+                <Button onClick={() => signIn('google') }>Login</Button>
             }
         </>
     )

@@ -32,7 +32,7 @@ const handler = async (req, res): Promise<Response> => {
   const main = `give ${total} test questions`
   const _grade = `for ${grade.toLocaleLowerCase() === 'umum' ? 'umum' : `${grade}`}`
   const _topic = topic ? `with topic related to: ${topic}.` : ''
-  const answer = `use json ${have_options ? '[{question,options,answer}]' : '[{question,answer}]'}}.`
+  const answer = `use json ${have_options ? '[{question:"question",options:[],answer:"answear"}]' : '[{question:"question",answer:"answear"}]'}}.`
   const rules = `do not add any prefix like a number or character`
   const language = `use bahasa indonesia for the value`
 

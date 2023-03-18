@@ -4,6 +4,9 @@ import "@/styles/globals.css"
 import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react';
 import Toaster from "@/components/toaster";
+import Footer from "@/components/footer";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 export const metadata = {
   title: 'BikinSoal - Generate Soal Online',
@@ -50,21 +53,22 @@ const inter = Inter({
   variable: '--inter-font',
 })
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const session = await getServerSession(authOptions)
   return (
     <html lang="en" className="light">
-      <body className={cn('dark:bg-[#0c0c0c] dark:text-white', inter.className)}>
-        {/* @ts-expect-error Server Component */}
-        <Navbar />
-        <main>
+      <body className={cn('mt-32 dark:bg-[#0c0c0c] dark:text-white', inter.className)}>
+        <Navbar session={session} />
+        <main className="min-h-screen">
           {children}
           <Analytics />
           <Toaster />
         </main>
+        <Footer />
       </body>
     </html>
   )

@@ -2,9 +2,17 @@
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import React from 'react'
+import useSWR from 'swr'
+
+const fetcher = (url) => fetch(url).then(res => res.json())
 
 const SectionHeader = () => {
+
+  const { data: counter, error } = useSWR('/api/getcounter', fetcher, { refreshInterval: 10000 })
+
+  const router = useRouter()
   const firstVariants = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0, transition: { duration: 0.3 } },
@@ -26,7 +34,7 @@ const SectionHeader = () => {
       />
       <motion.h1 className='mt-8 w-full text-center text-[28px] font-bold leading-snug text-[#1B1A1E] md:w-4/6 md:text-[32px] lg:text-[42px]'>Bikin Soal Jadi Mudah: Cerdas, Cepat, dan Inovatif dengan AI!</motion.h1>
       <h2 className='mt-8 inline-flex gap-2'>
-        <span className='font-bold'>120</span>
+        <span className='font-bold'>{counter?.counter || 0}</span>
         Soal sudah di generate </h2>
 
       <motion.div whileHover={{ scale: 1.05 }} transition={{ type: 'spring', stiffness: 400, damping: 10 }} className='relative mt-10'>
@@ -34,6 +42,7 @@ const SectionHeader = () => {
           onPointerDownCapture={e => e.stopPropagation()}
           className='relative h-14 bg-emerald-500 text-lg hover:bg-emerald-500'
           size={"lg"}
+          onClick={() => router.push('/app/generate')}
           type="button">
           Coba Gratis Sekarang!
         </Button>
