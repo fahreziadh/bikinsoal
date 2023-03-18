@@ -124,7 +124,7 @@ const MainPage = ({ session }: Props) => {
 
     return (
         <div className='flex w-full flex-col gap-8 lg:flex-row lg:gap-4'>
-            <div className='flex h-auto w-3/12 flex-col'>
+            <div className='flex h-auto w-full flex-col lg:w-3/12'>
                 <form className="flex w-full flex-col gap-2 rounded-lg">
                     <h1 className='mb-4 inline-flex w-full items-center justify-between border-b border-zinc-50 text-lg font-bold'><span>Filter Generate</span></h1>
                     <div className='flex flex-col gap-2'>
@@ -169,11 +169,11 @@ const MainPage = ({ session }: Props) => {
                     </Button>
                 </form>
             </div>
-            <div className='flex min-h-screen w-9/12 flex-col gap-4 border-l border-zinc-100 pl-8'>
+            <div className='flex min-h-screen w-full flex-col gap-4 border-l border-zinc-100 lg:w-9/12 lg:pl-8'>
                 {/* Recommendation */}
 
                 {isInitial &&
-                    <div className='grid grid-cols-3 gap-8 self-center'>
+                    <div className='grid grid-cols-1 gap-8 self-center lg:grid-cols-3'>
                         <span className='cursor-pointer rounded-lg border p-4 text-sm hover:bg-zinc-100' onClick={() => { setSubject('Matematika'); setTopic('Pecahan'); setGrade('SD Kelas 5'); setTotal(5) }}><span className='font-bold'>Matematika</span>: Pecahan untuk kelas 5 SD</span>
                         <span className='cursor-pointer rounded-lg border p-4 text-sm hover:bg-zinc-100' onClick={() => { setSubject('Bahasa Inggris'); setTopic('Expression'); setGrade('SMP Kelas 3'); setTotal(5) }}><span className='font-bold'>Bahasa Inggris</span>: Expression untuk kelas 3 SMP</span>
                         <span className='cursor-pointer rounded-lg border p-4 text-sm hover:bg-zinc-100' onClick={() => { setSubject('IPA'); setTopic('Sistem Pencernaan'); setGrade('SMA Kelas 1'); setTotal(5) }}><span className='font-bold'>IPA</span>: Sistem Pencernaan untuk kelas 1 SMA</span>
