@@ -61,7 +61,7 @@ const CardPricingMingguan = () => {
 
 const SectionPricing = () => {
   return (
-    <div className='mt-40 flex flex-col items-center justify-center'>
+    <div className='mt-20 flex flex-col items-center justify-center'>
       <h1 className='text-center text-3xl font-bold'>Daftar Harga</h1>
       <h2 className='mt-4 text-lg'>Jelajahi paket berlangganan sesuai kebutuhan anda</h2>
       <div className='mt-8 grid w-full grid-cols-1 gap-3 lg:grid-cols-3 lg:gap-6'>
