@@ -67,7 +67,7 @@ const ItemQuestion = ({ question: q, index }: Props) => {
         {q?.options?.map((option, index) => {
           return (
             <div key={index}>
-              <span className="font-bold">{String.fromCharCode(97 + index)}.</span> {option}
+              {option}
             </div>
           )
         })}
