@@ -34,7 +34,7 @@ const handler = async (req, res): Promise<Response> => {
   const _grade = `untuk ${grade.toLocaleLowerCase() === 'umum' ? 'umum' : `${grade}`}.`
   const _topic = topic ? `dengan topik terkait: ${topic}.` : ''
   const answer = `gunakan json ${have_options ? '[{question:"question",options:["a","b","c","d"],answer:"answear"}]' : '[{question:"question",answer:"answear"}]'}}.`
-  const rules = `jangan tambahkan awalan apa pun seperti angka atau karakter`
+  const rules = `jangan tambahkan awalan angka pada setiap soal.`
   const language = `gunakan referensi kurikulum di Indonesia`
 
   const content = `${main} ${_subject} ${_grade} ${_topic} ${answer} ${rules} ${language}`
