@@ -50,8 +50,6 @@ export function Options({ onChange, disabled, haveOptions }: Props) {
       </PopoverTrigger>
       <PopoverContent className="w-full p-0">
         <Command>
-          <CommandInput disabled={disabled} placeholder="Cari pilihan..." />
-          <CommandEmpty>No framework found.</CommandEmpty>
           <CommandGroup>
             {options.map((option) => (
               <CommandItem
