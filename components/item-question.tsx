@@ -22,11 +22,11 @@ const ItemQuestion = ({ question: q, index }: Props) => {
       },
       body: JSON.stringify({
         question: q.question,
-        a: q.options[0] || null,
-        b: q.options[1] || null,
-        c: q.options[2] || null,
-        d: q.options[3] || null,
-        e: q.options[4] || null,
+        a: q.options?.[0] || null,
+        b: q.options?.[1] || null,
+        c: q.options?.[2] || null,
+        d: q.options?.[3] || null,
+        e: q.options?.[4] || null,
         answer: q.answer
       })
     })

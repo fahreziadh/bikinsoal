@@ -8,7 +8,7 @@ import useSWR from 'swr'
 
 const fetcher = (url) => fetch(url).then(res => res.json())
 
-const SectionHeader = () => {
+const SectionHeader = ({session}) => {
 
   const { data: counter, error } = useSWR('/api/getcounter', fetcher, { refreshInterval: 10000 })
 
@@ -24,7 +24,7 @@ const SectionHeader = () => {
   };
 
   return (
-    <motion.div variants={firstVariants} transition={{ type: 'tween', ease: 'easeInOut' }} initial="initial" animate="animate" className="mt-16 flex flex-col items-center justify-center bg-[url('/bg-transparent.svg')] sm:mt-32">
+    <motion.div variants={firstVariants} transition={{ type: 'tween', ease: 'easeInOut' }} initial="initial" animate="animate" className="mt-24 flex flex-col items-center justify-center bg-[url('/bg-transparent.svg')] sm:mt-32">
       <Image
         src="/illustration.png"
         alt="illustration"
@@ -44,7 +44,7 @@ const SectionHeader = () => {
           size={"lg"}
           onClick={() => router.push('/app/generate')}
           type="button">
-          Coba Gratis Sekarang!
+          {session?.user ? "Mulai Generate" : "Coba Gratis Sekarang!"}
         </Button>
       </motion.div>
 

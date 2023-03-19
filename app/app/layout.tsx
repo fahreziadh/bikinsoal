@@ -6,7 +6,7 @@ export default function Layout({
     children: React.ReactNode
 }) {
     return (
-        <div className="container flex flex-row">
+        <div className="container mt-32 flex flex-row">
             {children}
         </div>
     )

@@ -61,9 +61,9 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions)
   return (
     <html lang="en" className="light">
-      <body className={cn('mt-32 dark:bg-[#0c0c0c] dark:text-white', inter.className)}>
+      <body className={cn('dark:bg-[#0c0c0c] dark:text-white', inter.className)}>
         <Navbar session={session} />
-        <main className="min-h-screen">
+        <main>
           {children}
           <Analytics />
           <Toaster />

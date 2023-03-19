@@ -4,6 +4,7 @@ import { authOptions } from '@/pages/api/auth/[...nextauth]'
 import { getServerSession } from 'next-auth'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { BurgerMenu } from './burgermenu'
 import ButtonSession from './button-session'
@@ -11,6 +12,8 @@ import { Button } from './ui/button'
 
 const Navbar = ({ session }) => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathName = usePathname()
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,6 +28,12 @@ const Navbar = ({ session }) => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  
+  if (pathName === '/login') {
+    return null
+  }
+
   return (
     <div className={cn("fixed inset-x-0 top-0 z-10 flex justify-between bg-white p-4 transition lg:px-12", isScrolled ? 'shadow-sm' : '')}>
       <Link href="/" className='inline-flex'>
