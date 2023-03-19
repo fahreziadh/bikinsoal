@@ -29,14 +29,6 @@ const handler = async (req, res): Promise<Response> => {
     total: number;
   };
 
-  // const main = `give ${total} test questions,`
-  // const _subject = `for subject '${subject.toLocaleLowerCase() === 'Bahasa Inggris' ? 'English' : subject}',`
-  // const _grade = `for ${grade.toLocaleLowerCase() === 'umum' ? 'umum' : `${grade}`}.`
-  // const _topic = topic ? `with topic related to: ${topic}.` : ''
-  // const answer = `use json ${have_options ? '[{question:"question",options:[],answer:"answear"}]' : '[{question:"question",answer:"answear"}]'}}.`
-  // const rules = `do not add any prefix like a number or character`
-  // const language = `use bahasa indonesia for the value, and as much as possible please benchmark it on the curriculum in Indonesia`
-
   const main = `berikan ${total} soal ujian,`
   const _subject = `untuk pelajaran ${subject},`
   const _grade = `untuk ${grade.toLocaleLowerCase() === 'umum' ? 'umum' : `${grade}`}.`
