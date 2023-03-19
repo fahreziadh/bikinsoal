@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion'
-import React from 'react'
+import { Check, FolderPlus, Save } from 'lucide-react'
+import React, { useState } from 'react'
+import { Button } from './ui/button'
 
 interface Props {
   question: Question
@@ -7,6 +9,35 @@ interface Props {
 }
 
 const ItemQuestion = ({ question: q, index }: Props) => {
+
+  const [isSaved, setIsSaved] = useState(false)
+  const [iseLoading, setIsLoading] = useState(false)
+
+  const handleSave = async () => {
+    setIsLoading(true)
+    const res = await fetch('/api/questionbank', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        question: q.question,
+        a: q.options[0] || null,
+        b: q.options[1] || null,
+        c: q.options[2] || null,
+        d: q.options[3] || null,
+        e: q.options[4] || null,
+        answer: q.answer
+      })
+    })
+
+    if (res.status === 200) {
+      setIsSaved(true)
+    }
+
+    setIsLoading(false)
+  }
+
   const itemVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0 },
@@ -45,6 +76,10 @@ const ItemQuestion = ({ question: q, index }: Props) => {
             Jawaban : <span className="font-bold text-emerald-500">{q?.answer}</span>
           </div>
         )}
+      </div>
+      <div className='flex flex-row justify-end gap-2'>
+        <Button className='inline-flex items-center justify-center' variant="outline" size="sm"><FolderPlus className="mr-2 h-4 w-4" />Tambah ke grup</Button>
+        <Button className='inline-flex items-center justify-center' variant="outline" size="sm" disabled={iseLoading || isSaved} onClick={() => !isSaved && handleSave()}>{isSaved ? <><Check className="mr-2 h-4 w-4 text-emerald-500" />Tersimpan</> : <><Save className="mr-2 h-4 w-4" />Simpan</>}</Button>
       </div>
     </motion.div>
   )

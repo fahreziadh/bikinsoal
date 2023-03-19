@@ -57,7 +57,7 @@ const MainPage = ({ session }: Props) => {
             return;
         }
         setIsInitial(false)
-        
+
         await generate();
     }
 
@@ -84,7 +84,11 @@ const MainPage = ({ session }: Props) => {
         });
 
         if (!response.ok) {
-            throw new Error(response.statusText);
+            console.log(response);
+            
+            setIsLoading(false)
+            toast.error("Terjadi kesalahan, silahkan coba lagi", { position: 'bottom-center' })
+            return;
         }
 
         // This data is a ReadableStream
@@ -93,6 +97,7 @@ const MainPage = ({ session }: Props) => {
         if (!data) {
             return;
         }
+
         const decoder = new TextDecoder();
         const reader = data.getReader();
         let buffer = ""
@@ -179,7 +184,7 @@ const MainPage = ({ session }: Props) => {
                         <span className='cursor-pointer rounded-lg border p-4 text-sm hover:bg-zinc-100' onClick={() => { setSubject('IPA'); setTopic('Sistem Pencernaan'); setGrade('SMA Kelas 1'); setTotal(5) }}><span className='font-bold'>IPA</span>: Sistem Pencernaan untuk kelas 1 SMA</span>
                     </div>
                 }
-                {isLoading && [0, 1, 2, 3].map((item) => (<LoadingItemQuestion  key={item} />))}
+                {isLoading && [0, 1, 2, 3].map((item) => (<LoadingItemQuestion key={item} />))}
                 {questions.map((question, index) => {
                     return (
                         <ItemQuestion key={index} index={index + 1} question={question} />
