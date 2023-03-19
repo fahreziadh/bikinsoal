@@ -84,7 +84,11 @@ const MainPage = ({ session }: Props) => {
         });
 
         if (!response.ok) {
-            throw new Error(response.statusText);
+            console.log(response);
+            
+            setIsLoading(false)
+            toast.error("Terjadi kesalahan, silahkan coba lagi", { position: 'bottom-center' })
+            return;
         }
 
         // This data is a ReadableStream
@@ -93,6 +97,7 @@ const MainPage = ({ session }: Props) => {
         if (!data) {
             return;
         }
+
         const decoder = new TextDecoder();
         const reader = data.getReader();
         let buffer = ""
