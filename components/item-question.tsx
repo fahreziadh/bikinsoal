@@ -77,7 +77,7 @@ const ItemQuestion = ({ question: q, index }: Props) => {
           </div>
         )}
       </div>
-      <div className='flex flex-row justify-end gap-2'>
+      <div className='mt-4 flex flex-row justify-end gap-2'>
         <Button className='inline-flex items-center justify-center' variant="outline" size="sm"><FolderPlus className="mr-2 h-4 w-4" />Tambah ke grup</Button>
         <Button className='inline-flex items-center justify-center' variant="outline" size="sm" disabled={iseLoading || isSaved} onClick={() => !isSaved && handleSave()}>{isSaved ? <><Check className="mr-2 h-4 w-4 text-emerald-500" />Tersimpan</> : <><Save className="mr-2 h-4 w-4" />Simpan</>}</Button>
       </div>
