@@ -24,7 +24,7 @@ const SectionHeader = ({session}) => {
   };
 
   return (
-    <motion.div variants={firstVariants} transition={{ type: 'tween', ease: 'easeInOut' }} initial="initial" animate="animate" className="mt-24 flex flex-col items-center justify-center bg-[url('/bg-transparent.svg')] sm:mt-32">
+    <motion.div variants={firstVariants} transition={{ type: 'tween', ease: 'easeInOut' }} initial="initial" animate="animate" className="mt-24 flex flex-col items-center justify-center sm:mt-32">
       <Image
         src="/illustration.png"
         alt="illustration"
