@@ -10,6 +10,7 @@ export const revalidate = 3600;
 
 const Page = async() => {
   const session = await getServerSession(authOptions)
+  
   return (
     <div className='container'>
       <SectionHeader session={session} />
