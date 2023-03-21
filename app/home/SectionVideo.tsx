@@ -1,5 +1,7 @@
 "use client"
 
+export const revalidate = 60;
+
 const SectionVideo = () => {
   return (
     <div className="mt-20">
