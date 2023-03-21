@@ -48,6 +48,7 @@
     "class-variance-authority": "^0.4.0",
     "clsx": "^1.2.1",
     "cmdk": "^0.1.21",
+    "dayjs": "^1.11.7",
     "downshift": "^7.4.0",
     "eventsource-parser": "^0.1.0",
     "framer-motion": "^10.3.2",
