@@ -8,7 +8,7 @@ import useDebounceValue from '@/hooks/use-debounce'
 import { fetcher } from '@/lib/fetcher'
 import { exportToXLSX } from '@/utils/exportexcel'
 import { QuestionBank } from '@prisma/client'
-import { Download, FolderPlus, Pointer, Trash } from 'lucide-react'
+import { Download, FolderPlus, Pointer, Trash, X } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import useSWR from 'swr'
@@ -101,9 +101,9 @@ const SectionBank = () => {
           {state === 'idle' && <Button onClick={() => setState('onSelect')}><Pointer className="mr-2 h-4 w-4" />Pilih</Button>}
           {state === 'onSelect' &&
             <>
-              <Button onClick={onCancelSelect}>Batal</Button>
-              <Button variant="destructive" onClick={onRemoveClick}><Trash className="mr-2 h-4 w-4" />Hapus</Button>
-              <Button variant="outline" onClick={onExportClick}><Download className="mr-2 h-4 w-4" />Export</Button>
+              <Button onClick={onCancelSelect}><X className="h-4 w-4"/></Button>
+              <Button variant="destructive" onClick={onRemoveClick}><Trash className="h-4 w-4" /></Button>
+              <Button variant="outline" onClick={onExportClick}><Download className="h-4 w-4" /></Button>
               <Button variant="outline"><FolderPlus className="mr-2 h-4 w-4" />Masuk ke Grup</Button>
             </>}
 
