@@ -24,7 +24,7 @@ const SectionHeader = () => {
   };
 
   return (
-      <motion.div variants={firstVariants} transition={{ type: 'tween', ease: 'easeInOut' }} initial="initial" animate="animate" className="mt-24 flex flex-col items-center justify-center sm:mt-32 xl:mt-60">
+      <div className="mt-24 flex flex-col items-center justify-center sm:mt-32 xl:mt-60">
         <Image
           src="/illustration.png"
           alt="illustration"
@@ -57,7 +57,7 @@ const SectionHeader = () => {
             <Image src="/aws.png" alt="logo-1" width={100} height={100} quality={100} className="w-1/3 object-contain" />
           </div>
         </motion.div>
-      </motion.div >
+      </div>
   )
 }
 
