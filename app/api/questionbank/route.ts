@@ -36,3 +36,26 @@ export const POST = async (req: NextRequest) => {
 
     return NextResponse.json(qb)
 }
+
+export const GET = async (req: NextRequest) => {
+    const session = await getServerSession(authOptions)
+
+    if (!session?.user?.email) {
+        return {
+            status: 401,
+            body: {
+                message: "Unauthorized"
+            }
+        }
+    }
+
+    const qb = await prisma.questionBank.findMany({
+        where: {
+            user: {
+                email: session?.user?.email
+            }
+        }
+    })
+
+    return NextResponse.json(qb)
+}
