@@ -47,6 +47,7 @@ model User {
   sessions          Session[]
   QuestionGenerated QuestionGenerated[]
   QuestionBank      QuestionBank[]
+  QuestionGroup     QuestionGroup[]
 }
 
 model VerificationToken {
@@ -81,6 +82,18 @@ model QuestionBank {
   user_id   String   @db.VarChar(255)
   answer    String?  @db.VarChar(255)
   subject   String?  @db.VarChar(255)
+  user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+model QuestionGroup {
+  id        String   @id @default(cuid())
+  name      String   @db.VarChar(255)
+  questions Json     @db.Json @default("[]")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  user_id   String   @db.VarChar(255)
   user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id])

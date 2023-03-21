@@ -90,3 +90,31 @@ export const GET = async (req: NextRequest) => {
         }
     )
 }
+
+export const DELETE = async (req: NextRequest) => {
+    const session = await getServerSession(authOptions)
+
+    if (!session?.user?.email) {
+        return {
+            status: 401,
+            body: {
+                message: "Unauthorized"
+            }
+        }
+    }
+
+    const { ids } = await req.json()
+
+    const qb = await prisma.questionBank.deleteMany({
+        where: {
+            user: {
+                email: session?.user?.email
+            },
+            id: {
+                in: ids
+            }
+        }
+    })
+
+    return NextResponse.json(qb)
+}

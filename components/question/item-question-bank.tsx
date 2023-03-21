@@ -7,16 +7,18 @@ import React from 'react'
 interface Props {
     question: QuestionBank
     index: number
+    iseSelected?: boolean
 }
 
-const ItemQuestionBank = ({ question, index }: Props) => {
-
+const ItemQuestionBank = ({ question, index, iseSelected }: Props) => {
 
     return (
         <motion.div
-            className="flex flex-row items-center gap-4 border-b p-3 text-sm hover:bg-zinc-50">
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className={cn("flex flex-row items-center gap-4 border-b p-3 text-sm transition",iseSelected ? "bg-indigo-100 hover:bg-indigo-50" : "hover:bg-zinc-50")}>
             <span className="w-4 font-light text-zinc-600">{index}.</span>
-            <h2 className="mr-8 w-4/12 overflow-hidden truncate font-medium hover:text-clip"      >
+            <h2 className="mr-8 w-6/12 overflow-hidden truncate font-medium hover:text-clip"      >
                 {question.question}
             </h2>
             <div className='w-2/12'>
@@ -33,6 +35,9 @@ const ItemQuestionBank = ({ question, index }: Props) => {
             </div>
             <div className='w-2/12 text-xs'>
                 <span>{dayjs(question.createdAt).format("HH:mm, D MMM YYYY")}</span>
+            </div>
+            
+            <div className='w-2/12 text-xs'>
             </div>
         </motion.div>
     )

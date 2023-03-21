@@ -60,7 +60,7 @@ export default async function RootLayout({
     <html lang="en" className="light">
       <body className={cn('dark:bg-[#0c0c0c] dark:text-white', inter.className)}>
         <Navbar />
-        <main>
+        <main className="mt-24">
           {children}
           <Analytics />
           <Toaster />

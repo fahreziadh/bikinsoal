@@ -18,7 +18,7 @@ const CardPricingFree = () => {
       <span className='inline-flex items-center text-sm'><Check className="mr-2 h-4 w-4 text-emerald-500" />Simpan Bank Soal</span>
       <span className='inline-flex items-center text-sm'><Check className="mr-2 h-4 w-4 text-emerald-500" />Generate Up to 15 Soal/hari</span>
     </div>
-    <Link href={"/app/generate"} className="w-full"><Button className='mt-8 w-full border bg-transparent font-bold text-emerald-500 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white' size="sm">Coba Gratis</Button></Link>
+    <Link href={"/generate"} className="w-full"><Button className='mt-8 w-full border bg-transparent font-bold text-emerald-500 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white' size="sm">Coba Gratis</Button></Link>
   </div>
 }
 

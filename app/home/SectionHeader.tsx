@@ -39,7 +39,7 @@ const SectionHeader = () => {
             onPointerDownCapture={e => e.stopPropagation()}
             className='relative h-14 bg-emerald-500 text-lg hover:bg-emerald-500'
             size={"lg"}
-            onClick={() => router.push('/app/generate')}
+            onClick={() => router.push('/generate')}
             type="button">
             {session?.data?.user ? "Mulai Generate" : "Coba Gratis Sekarang!"}
           </Button>

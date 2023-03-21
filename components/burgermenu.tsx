@@ -45,19 +45,19 @@ export function BurgerMenu() {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <Link prefetch={false} href="/app/generate">
+                    <Link prefetch={false} href="/generate">
                         <DropdownMenuItem>
                             Generate Soal
                         </DropdownMenuItem>
                     </Link>
 
-                    <Link prefetch={false} href="/app/banksoal">
+                    <Link prefetch={false} href="/banksoal">
                         <DropdownMenuItem>
                             Bank Soal
                         </DropdownMenuItem>
                     </Link>
 
-                    <Link prefetch={false} href="/app/myaccount">
+                    <Link prefetch={false} href="/myaccount">
                         <DropdownMenuItem>
                             Akun Saya
                         </DropdownMenuItem>

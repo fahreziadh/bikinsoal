@@ -126,7 +126,7 @@ const MainPage = ({ session }: Props) => {
     }
 
     return (
-        <div className='flex w-full flex-col gap-8 lg:flex-row lg:gap-4'>
+        <div className='container mt-10 flex w-full flex-col gap-8 lg:flex-row lg:gap-4'>
             <div className='flex h-auto w-full flex-col lg:w-3/12'>
                 <form className="flex w-full flex-col gap-2 rounded-lg">
                     <h1 className='mb-4 inline-flex w-full items-center justify-between border-b border-zinc-50 text-lg font-bold'><span>Filter Generate</span></h1>

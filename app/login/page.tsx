@@ -10,7 +10,7 @@ const page = async() => {
     const session = await getServerSession(authOptions)
 
     if(session?.user) {
-        redirect('/app/generate')
+        redirect('/generate')
     }
 
     return (

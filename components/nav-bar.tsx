@@ -40,9 +40,9 @@ const Navbar = () => {
         </Link>
 
         <div className='hidden items-center gap-4 md:inline-flex'>
-          <Link href="/app/generate" className={cn('rounded-lg px-3 py-2 text-sm font-semibold hover:bg-zinc-100', pathName === '/app/generate' && 'bg-zinc-100')}>Generate Soal</Link>
-          <Link href="/app/banksoal" className={cn('rounded-lg px-3 py-2 text-sm font-semibold hover:bg-zinc-100', pathName === '/app/banksoal' && 'bg-zinc-100')}>Bank Soal</Link>
-          <Link href="/app/myaccount" className={cn('rounded-lg px-3 py-2 text-sm font-semibold hover:bg-zinc-100', pathName === '/app/myaccount' && 'bg-zinc-100')}>Akun Saya</Link>
+          <Link href="/generate" className={cn('rounded-lg px-3 py-2 text-sm font-semibold hover:bg-zinc-100', pathName === '/generate' && 'bg-zinc-100')}>Generate Soal</Link>
+          <Link href="/banksoal" className={cn('rounded-lg px-3 py-2 text-sm font-semibold hover:bg-zinc-100', pathName === '/banksoal' && 'bg-zinc-100')}>Bank Soal</Link>
+          <Link href="/myaccount" className={cn('rounded-lg px-3 py-2 text-sm font-semibold hover:bg-zinc-100', pathName === '/myaccount' && 'bg-zinc-100')}>Akun Saya</Link>
           <ButtonSession />
         </div>
         <div className='flex md:hidden'>
