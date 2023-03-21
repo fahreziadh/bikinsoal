@@ -25,13 +25,13 @@ const SectionHeader = () => {
   };
 
   return (
-    <SessionProvider>
-      <motion.div variants={firstVariants} transition={{ type: 'tween', ease: 'easeInOut' }} initial="initial" animate="animate" className="mt-24 flex flex-col items-center justify-center sm:mt-32">
+      <motion.div variants={firstVariants} transition={{ type: 'tween', ease: 'easeInOut' }} initial="initial" animate="animate" className="mt-24 flex flex-col items-center justify-center sm:mt-32 xl:mt-60">
         <Image
           src="/illustration.png"
           alt="illustration"
           width={100}
           height={100}
+          className="w-16 object-contain sm:w-24"
           quality={100}
         />
         <motion.h1 className='mt-8 w-full text-center text-[28px] font-bold leading-snug text-[#1B1A1E] md:w-4/6 md:text-[32px] lg:text-[42px]'>Bikin Soal Jadi Mudah: Cerdas, Cepat, dan Inovatif dengan AI!</motion.h1>
@@ -59,7 +59,6 @@ const SectionHeader = () => {
           </div>
         </motion.div>
       </motion.div >
-    </SessionProvider>
   )
 }
 
