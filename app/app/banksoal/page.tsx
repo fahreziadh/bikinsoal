@@ -21,44 +21,47 @@ const Page = () => {
 
 
   return (
-    <div className='flex min-h-screen w-full min-w-[1200px] flex-col'>
+    <div className='flex min-h-screen w-full flex-col overflow-hidden'>
       <h1 className='mb-8 text-2xl font-bold'>List Soal</h1>
       <div className='mb-4 inline-flex w-full items-center gap-2'>
         <Input placeholder='Cari Soal' className='w-6/12' value={query} onChange={(e) => setQuery(e.target.value)} />
       </div>
-      <div className='mb-2 flex flex-row items-center gap-4 rounded-md border p-3 text-sm text-zinc-600'>
-        <h2 className="mx-8 w-1/3 overflow-hidden truncate font-medium hover:text-clip">
-          Pertanyaan
-        </h2>
-        <span className='w-2/12 rounded-full'>
-          Jenis
-        </span>
-        
-        <span className='w-2/12 rounded-full'>
-          Mata Pelajaran
-        </span>
-        
-        <span className='w-2/12 rounded-full'>
-          Dibuat
-        </span>
-      </div>
+
 
       {isLoading && <div className='flex flex-col'>{[...Array(5)].map((_, index) => (<LoadingItemQuestionBank key={index} />))}</div>}
       {!isLoading && !data?.questions.length && <div className='flex flex-col p-3'>Tidak ada data</div>}
 
-      {data && data?.questions?.length > 0 && <div className="rounded-md border">
-        {data?.questions?.map((item, index) => (
-          <div
-          className='cursor-pointer'
-           onClick={()=>toast('Coming Soon')}
-           key={item.id} >
-            <ItemQuestionBank
-            index={(page-1)*limit + (index + 1)} 
-            question={item} />
-          </div>
-        ))}
+      <div className='overflow-x-scroll'>
+        <div className='mb-2 flex min-w-[1200px] flex-row items-center gap-4 rounded-md border p-3 text-sm text-zinc-600'>
+          <h2 className="mx-8 w-1/3 overflow-hidden truncate font-medium hover:text-clip">
+            Pertanyaan
+          </h2>
+          <span className='w-2/12 rounded-full'>
+            Jenis
+          </span>
+
+          <span className='w-2/12 rounded-full'>
+            Mata Pelajaran
+          </span>
+
+          <span className='w-2/12 rounded-full'>
+            Dibuat
+          </span>
+        </div>
+        {data && data?.questions?.length > 0 && <div className="min-w-[1200px] rounded-md border">
+          {data?.questions?.map((item, index) => (
+            <div
+              className='cursor-pointer'
+              onClick={() => toast('Coming Soon')}
+              key={item.id} >
+              <ItemQuestionBank
+                index={(page - 1) * limit + (index + 1)}
+                question={item} />
+            </div>
+          ))}
+        </div>
+        }
       </div>
-      }
       <Paginations
         onClick={(page) => setPage(page)}
         className='mt-4 self-end'
