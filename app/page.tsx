@@ -1,4 +1,5 @@
 "use client"
+import { domAnimation, LazyMotion } from 'framer-motion'
 import { SessionProvider } from 'next-auth/react'
 import React from 'react'
 import SectionFeature from './home/SectionFeature'
@@ -10,12 +11,14 @@ const Page = () => {
 
   return (
     <SessionProvider>
-      <div className='container'>
-        <SectionHeader />
-        <SectionVideo />
-        <SectionFeature />
-        <SectionPricing />
-      </div>
+      <LazyMotion features={domAnimation}>
+        <div className='container'>
+          <SectionHeader />
+          <SectionVideo />
+          <SectionFeature />
+          <SectionPricing />
+        </div>
+      </LazyMotion>
     </SessionProvider>
   )
 }
