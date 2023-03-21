@@ -55,6 +55,9 @@ const SectionBank = () => {
       }
     })
     exportToXLSX(se || [], `bikinsoal-${new Date().toISOString()}`)
+    setDialogOpen('')
+    setSelect([])
+    setState('idle')
   }
 
   const onRemoveClick = () => {
