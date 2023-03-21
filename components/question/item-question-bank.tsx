@@ -24,7 +24,7 @@ const ItemQuestionBank = ({ question, index, iseSelected }: Props) => {
             <div className='w-2/12'>
                 <span
                     className={cn(
-                        'rounded-full px-4 py-1 text-xs font-bold ',
+                        'truncate rounded-full px-4 py-1 text-xs font-bold ',
                         question.a ? ' border border-indigo-500 bg-indigo-100 text-indigo-500' : 'border border-teal-500 bg-teal-100 text-teal-500'
                     )}>
                     {question.a ? 'Pilihan Ganda' : 'Essay'}

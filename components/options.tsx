@@ -7,9 +7,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Command,
-  CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
 } from "@/components/ui/command"
 import {
@@ -24,6 +22,7 @@ const options = [
 ]
 
 interface Props {
+  // eslint-disable-next-line no-unused-vars
   onChange?: (haveOptions: boolean) => void
   haveOptions?: boolean
   disabled?: boolean
