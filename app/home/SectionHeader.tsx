@@ -10,13 +10,9 @@ import useSWR from 'swr'
 
 const SectionHeader = () => {
   const session = useSession()
-  const { data: counter, error } = useSWR('/api/getcounter', fetcher, { refreshInterval: 10000 })
+  const { data: counter } = useSWR('/api/getcounter', fetcher, { refreshInterval: 10000 })
 
   const router = useRouter()
-  const firstVariants = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-  };
 
   const secondVariants = {
     initial: { opacity: 0, y: 20 },

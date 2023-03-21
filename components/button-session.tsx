@@ -1,7 +1,6 @@
 "use client"
 import { getInitialsFromEmail } from '@/utils/GetInitialsFromEmail'
 import { LogOut } from 'lucide-react'
-import { Session } from 'next-auth'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'

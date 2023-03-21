@@ -1,26 +1,14 @@
 "use client"
 
 import {
-    Calculator,
-    Calendar,
-    CreditCard,
-    Settings,
-    Smile,
-    User,
-} from "lucide-react"
-
-import {
     Command,
-    CommandDialog,
     CommandEmpty,
     CommandGroup,
     CommandInput,
     CommandItem,
     CommandList,
-    CommandSeparator,
-    CommandShortcut,
 } from "@/components/ui/command"
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import { mataPelajaran } from "@/lib/mapel"
 import { motion } from "framer-motion"
 

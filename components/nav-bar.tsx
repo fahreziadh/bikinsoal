@@ -1,7 +1,5 @@
 "use client"
 import { cn } from '@/lib/utils'
-import { authOptions } from '@/pages/api/auth/[...nextauth]'
-import { getServerSession } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'

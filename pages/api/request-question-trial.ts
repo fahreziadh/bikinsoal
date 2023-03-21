@@ -1,6 +1,4 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
-import { NextRequest, NextResponse } from "next/server";
 import { OpenAIStream, OpenAIStreamPayload } from "utils/OpenAiStream";
 
 if (!process.env.OPENAI_API_KEY) {
@@ -10,7 +8,7 @@ export const config = {
   runtime: 'edge',
 }
 
-const handler = async (req, res): Promise<Response> => {
+const handler = async (req): Promise<Response> => {
   if (req.method !== "POST") {
     return new Response("Method not allowed", { status: 405 });
   }
