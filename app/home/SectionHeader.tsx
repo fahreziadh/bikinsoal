@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button'
 import { fetcher } from '@/lib/fetcher'
 import { motion } from 'framer-motion'
-import { SessionProvider, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'

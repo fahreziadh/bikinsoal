@@ -5,8 +5,6 @@ import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react';
 import Toaster from "@/components/toaster";
 import Footer from "@/components/footer";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 export const metadata = {
   title: 'BikinSoal - Generate Soal Online',
