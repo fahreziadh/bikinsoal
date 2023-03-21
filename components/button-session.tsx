@@ -2,16 +2,15 @@
 import { getInitialsFromEmail } from '@/utils/GetInitialsFromEmail'
 import { LogOut } from 'lucide-react'
 import { Session } from 'next-auth'
-import { signIn, signOut } from 'next-auth/react'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Button } from './ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu'
 
-interface Props {
-    session: Session | null
-}
-const ButtonSession = ({ session }: Props) => {
+
+const ButtonSession = () => {
+    const { data: session } = useSession()
     return (
         <>
             {session?.user &&
@@ -34,7 +33,7 @@ const ButtonSession = ({ session }: Props) => {
                     </DropdownMenuContent>
                 </DropdownMenu>}
             {session?.user == null &&
-                <Button onClick={() => signIn('google') }>Login</Button>
+                <Button onClick={() => signIn('google')}>Login</Button>
             }
         </>
     )

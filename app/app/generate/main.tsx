@@ -13,9 +13,9 @@ import useSWR from 'swr'
 import { Slider } from '@/components/ui/slider'
 import { Session } from 'next-auth'
 import toast from 'react-hot-toast'
-import LoadingItemQuestion from '@/components/loading-item-question'
+import LoadingItemQuestion from '@/components/loading/loading-item-question'
 import { Boxes, Sidebar, SidebarClose, SidebarOpen } from 'lucide-react'
-import ItemQuestion from '@/components/item-question'
+import ItemQuestion from '@/components/question/item-question'
 
 
 interface Props {
@@ -85,7 +85,7 @@ const MainPage = ({ session }: Props) => {
 
         if (!response.ok) {
             console.log(response);
-            
+
             setIsLoading(false)
             toast.error("Terjadi kesalahan, silahkan coba lagi", { position: 'bottom-center' })
             return;
@@ -187,7 +187,12 @@ const MainPage = ({ session }: Props) => {
                 {isLoading && [0, 1, 2, 3].map((item) => (<LoadingItemQuestion key={item} />))}
                 {questions.map((question, index) => {
                     return (
-                        <ItemQuestion key={index} index={index + 1} question={question} />
+                        <ItemQuestion
+                            subject={subject}
+                            key={index}
+                            index={index + 1}
+                            question={question}
+                        />
                     )
                 })}
             </div>

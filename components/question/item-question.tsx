@@ -1,14 +1,15 @@
 import { motion } from 'framer-motion'
 import { Check, FolderPlus, Save } from 'lucide-react'
 import React, { useState } from 'react'
-import { Button } from './ui/button'
+import { Button } from '../ui/button'
 
 interface Props {
   question: Question
   index: number
+  subject: string
 }
 
-const ItemQuestion = ({ question: q, index }: Props) => {
+const ItemQuestion = ({ question: q, index, subject }: Props) => {
 
   const [isSaved, setIsSaved] = useState(false)
   const [iseLoading, setIsLoading] = useState(false)
@@ -27,7 +28,8 @@ const ItemQuestion = ({ question: q, index }: Props) => {
         c: q.options?.[2] || null,
         d: q.options?.[3] || null,
         e: q.options?.[4] || null,
-        answer: q.answer
+        answer: q.answer,
+        subject
       })
     })
 
@@ -63,6 +65,7 @@ const ItemQuestion = ({ question: q, index }: Props) => {
         </span>
         <span className="font-bold">{q?.question}</span>
       </div>
+
       <div className="mt-4 flex flex-col gap-4 pl-7 text-sm">
         {q?.options?.map((option, index) => {
           return (
@@ -77,6 +80,7 @@ const ItemQuestion = ({ question: q, index }: Props) => {
           </div>
         )}
       </div>
+
       <div className='mt-4 flex flex-row justify-end gap-2'>
         <Button className='inline-flex items-center justify-center' variant="outline" size="sm"><FolderPlus className="mr-2 h-4 w-4" />Tambah ke grup</Button>
         <Button className='inline-flex items-center justify-center' variant="outline" size="sm" disabled={iseLoading || isSaved} onClick={() => !isSaved && handleSave()}>{isSaved ? <><Check className="mr-2 h-4 w-4 text-emerald-500" />Tersimpan</> : <><Save className="mr-2 h-4 w-4" />Simpan</>}</Button>

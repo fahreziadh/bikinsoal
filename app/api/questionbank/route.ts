@@ -15,8 +15,8 @@ export const POST = async (req: NextRequest) => {
         }
     }
 
-    const { question, a, b, c, d, e, answer } = await req.json()
-    
+    const { question, a, b, c, d, e, answer, subject } = await req.json()
+
     const qb = await prisma.questionBank.create({
         data: {
             question,
@@ -30,7 +30,8 @@ export const POST = async (req: NextRequest) => {
                 connect: {
                     email: session?.user?.email
                 }
-            }
+            },
+            subject: subject
         }
     })
 
@@ -49,13 +50,43 @@ export const GET = async (req: NextRequest) => {
         }
     }
 
+    const url = new URL(req.url)
+    const query = url.searchParams.get("query") || ''
+    const paramsPage = parseInt(url.searchParams.get("page") || '1')
+    const paramsLimit = parseInt(url.searchParams.get("limit") || '10')
+
     const qb = await prisma.questionBank.findMany({
         where: {
             user: {
                 email: session?.user?.email
+            },
+            question: {
+                contains: query
+            }
+        },
+        skip: (paramsPage - 1) * paramsLimit,
+        take: paramsLimit,
+    })
+
+    const total = await prisma.questionBank.count({
+        where: {
+            user: {
+                email: session?.user?.email
+            },
+            question: {
+                contains: query
             }
         }
     })
 
-    return NextResponse.json(qb)
+    return NextResponse.json(
+        {
+            questions: qb,
+            pagination: {
+                total,
+                totalPage: Math.ceil(total / paramsLimit),
+                currentPage: paramsPage,
+            }
+        }
+    )
 }

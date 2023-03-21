@@ -80,6 +80,7 @@ model QuestionBank {
   updatedAt DateTime @default(now()) @updatedAt
   user_id   String   @db.VarChar(255)
   answer    String?  @db.VarChar(255)
+  subject   String?  @db.VarChar(255)
   user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id])

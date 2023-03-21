@@ -58,11 +58,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getServerSession(authOptions)
   return (
     <html lang="en" className="light">
       <body className={cn('dark:bg-[#0c0c0c] dark:text-white', inter.className)}>
-        <Navbar session={session} />
+        <Navbar />
         <main>
           {children}
           <Analytics />
