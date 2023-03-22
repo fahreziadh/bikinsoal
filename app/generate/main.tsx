@@ -197,7 +197,7 @@ const MainPage = ({ session, limit: initialLimit }: Props) => {
 
                         <div className='mt-4 flex w-full flex-col gap-2'>
                             <Label>Jumlah Soal <span className='text-lg font-bold'>--{total}--</span></Label>
-                            <Slider disabled={isLoading} defaultValue={[0]} max={limit?.limit_left} step={5} onValueChange={(e) => setTotal(e[0])} value={[total]} />
+                            <Slider disabled={isLoading} defaultValue={[0]} max={limit.have_subscription ? 20 : limit?.limit_left} step={5} onValueChange={(e) => setTotal(e[0])} value={[total]} />
                         </div>
                     </motion.div>
                     <Button
