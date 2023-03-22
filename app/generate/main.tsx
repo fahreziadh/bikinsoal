@@ -60,7 +60,7 @@ const MainPage = ({ session, limit: initialLimit }: Props) => {
     };
 
     const onSubmit = async () => {
-        if (limit?.is_limit_reached) {
+        if (limit?.is_limit_reached && limit?.have_subscription === false) {
             router.replace('/generate/limit')
         }
 
