@@ -158,7 +158,6 @@ const MainPage = ({ session, limit: initialLimit }: Props) => {
                     {limit.have_subscription ?
                         <div className='mb-4 flex flex-col'>
                             <Label className='text-sm'>Status Kamu: </Label>
-                            {isLoading && <span>Loading....</span>}
                             <span className='text-sm font-bold'>Aktif {dayjs(limit.expired_at).fromNow()}</span>
                         </div>
                         :
