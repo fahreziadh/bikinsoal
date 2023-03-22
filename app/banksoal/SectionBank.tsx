@@ -11,6 +11,7 @@ import { QuestionBank } from '@prisma/client'
 import { Download, FolderPlus, Pointer, Trash, X } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import useSWR from 'swr'
 
 const SectionBank = () => {
@@ -104,7 +105,7 @@ const SectionBank = () => {
               <Button onClick={onCancelSelect}><X className="h-4 w-4"/></Button>
               <Button variant="destructive" onClick={onRemoveClick}><Trash className="h-4 w-4" /></Button>
               <Button variant="outline" onClick={onExportClick}><Download className="h-4 w-4" /></Button>
-              <Button variant="outline"><FolderPlus className="mr-2 h-4 w-4" />Masuk ke Grup</Button>
+              <Button variant="outline" onClick={()=>toast("Fitur ini masih dalam pengembangan")}><FolderPlus className="mr-2 h-4 w-4" />Masuk ke Grup</Button>
             </>}
 
         </div>
