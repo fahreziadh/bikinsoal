@@ -49,7 +49,7 @@ export const POST = async (req: NextRequest) => {
         return NextResponse.json({ message: 'User not found' })
     }
 
-    const response = await fetch('https://app.sandbox.midtrans.com/snap/v1/transactions',
+    const response = await fetch(process.env.SERVER_KEY_MIDTRANS_URL || '',
         {
             method: 'POST',
             headers: {
