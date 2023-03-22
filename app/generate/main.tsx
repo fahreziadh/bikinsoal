@@ -40,7 +40,6 @@ const MainPage = ({ session, limit: initialLimit }: Props) => {
     const [limit, setLimit] = useState<{ limit_left: number, is_limit_reached: boolean, limit_max: number, have_subscription: boolean, expired_at: string }>(initialLimit)
 
     const getLimitFromApi = async () => {
-        setIsLoading(true)
         const res = await fetch('/api/payment/limit').finally(() => { setIsLoading(false) })
         if (!res.ok) {
             router.push('/404')
@@ -143,11 +142,12 @@ const MainPage = ({ session, limit: initialLimit }: Props) => {
         setIsLoading(false)
         scrollToBios();
         addQuestionTotal(total)
-        await getLimitFromApi()
     };
 
     const addQuestionTotal = async (total = 5) => {
-        await fetch("/api/counter?total=" + total)
+        const addCount = await fetch("/api/counter?total=" + total)
+        const getLimit = await getLimitFromApi()
+        Promise.all([addCount, getLimit])
     }
 
     return (
