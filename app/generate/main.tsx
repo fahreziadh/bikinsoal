@@ -15,11 +15,16 @@ import toast from 'react-hot-toast'
 import LoadingItemQuestion from '@/components/loading/loading-item-question'
 import ItemQuestion from '@/components/question/item-question'
 import { Progress } from '@/components/ui/progress'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import 'dayjs/locale/id'
 
+dayjs.extend(relativeTime)
+dayjs.locale('id')
 
 interface Props {
     session: Session | null
-    limit: number
+    limit: any
 }
 
 const MainPage = ({ session, limit: initialLimit }: Props) => {
@@ -32,7 +37,19 @@ const MainPage = ({ session, limit: initialLimit }: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [total, setTotal] = useState(0)
     const [isInitial, setIsInitial] = useState(true)
-    const [limit, setLimit] = useState(initialLimit)
+    const [limit, setLimit] = useState<{ limit_left: number, is_limit_reached: boolean, limit_max: number, have_subscription: boolean, expired_at: string }>(initialLimit)
+
+    const getLimitFromApi = async () => {
+        setIsLoading(true)
+        const res = await fetch('/api/payment/limit').finally(() => { setIsLoading(false) })
+        if (!res.ok) {
+            router.push('/404')
+        }
+
+        const json = await res.json()
+        setLimit(json)
+    }
+
 
     const soalRef = useRef<null | HTMLDivElement>(null);
 
@@ -42,9 +59,8 @@ const MainPage = ({ session, limit: initialLimit }: Props) => {
         }
     };
 
-
     const onSubmit = async () => {
-        if (limit === 0) {
+        if (limit?.is_limit_reached) {
             router.replace('/generate/limit')
         }
 
@@ -127,8 +143,7 @@ const MainPage = ({ session, limit: initialLimit }: Props) => {
         setIsLoading(false)
         scrollToBios();
         addQuestionTotal(total)
-        setLimit(limit - total)
-
+        await getLimitFromApi()
     };
 
     const addQuestionTotal = async (total = 5) => {
@@ -140,10 +155,19 @@ const MainPage = ({ session, limit: initialLimit }: Props) => {
             <div className='flex h-auto w-full flex-col lg:w-3/12'>
                 <form className="flex w-full flex-col gap-2 rounded-lg">
                     <h1 className='mb-4 inline-flex w-full items-center justify-between border-b border-zinc-50 text-lg font-bold'><span>Filter Generate</span></h1>
-                    <div className='mb-4 flex flex-col'>
-                        <Label className='text-sm'>Sisa Limit</Label>
-                        <span className='inline-flex items-center gap-2'><Progress value={((15 - limit) / 15) * 100} />{15 - limit}/15</span>
-                    </div>
+                    {limit.have_subscription ?
+                        <div className='mb-4 flex flex-col'>
+                            <Label className='text-sm'>Status Kamu: </Label>
+                            {isLoading && <span>Loading....</span>}
+                            <span className='text-sm font-bold'>Aktif {dayjs(limit.expired_at).fromNow()}</span>
+                        </div>
+                        :
+                        <div className='mb-4 flex flex-col'>
+                            <Label className='text-sm'>Sisa Limit</Label>
+                            {isLoading && <span>Loading....</span>}
+                            {limit && <span className='inline-flex items-center gap-2'> <Progress value={((limit?.limit_max - limit?.limit_left) / limit?.limit_max) * 100} />{limit?.limit_max - limit.limit_left}/{limit?.limit_max}</span>}
+                        </div>
+                    }
                     <div className='flex flex-col gap-2'>
                         <Label htmlFor="message-2">Mata Pelajaran / Subject</Label>
                         <SubjectChoice disabled={isLoading} onChange={(value) => setSubject(value)} value={subject} />
@@ -173,7 +197,7 @@ const MainPage = ({ session, limit: initialLimit }: Props) => {
 
                         <div className='mt-4 flex w-full flex-col gap-2'>
                             <Label>Jumlah Soal <span className='text-lg font-bold'>--{total}--</span></Label>
-                            <Slider disabled={isLoading} defaultValue={[0]} max={limit} step={5} onValueChange={(e) => setTotal(e[0])} value={[total]} />
+                            <Slider disabled={isLoading} defaultValue={[0]} max={limit?.limit_left} step={5} onValueChange={(e) => setTotal(e[0])} value={[total]} />
                         </div>
                     </motion.div>
                     <Button

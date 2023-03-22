@@ -2,7 +2,8 @@
 import { Button } from '@/components/ui/button'
 import { Check } from 'lucide-react'
 import Link from 'next/link'
-import React from 'react'
+import { useRouter } from 'next/navigation'
+import React, { useState } from 'react'
 import { toast } from 'react-hot-toast'
 
 const CardPricingFree = () => {
@@ -23,7 +24,7 @@ const CardPricingFree = () => {
 }
 
 
-export const CardPricingBulanan = () => {
+export const CardPricingBulanan = ({ onClick }) => {
   return <div className='flex min-h-[40px] w-full flex-col rounded-2xl border p-8'>
     <div className='flex w-full flex-row justify-between'>
       <span className='text-xl font-bold'>Bulanan</span>
@@ -39,11 +40,13 @@ export const CardPricingBulanan = () => {
       <span className='inline-flex items-center text-sm'><Check className="mr-2 h-4 w-4 text-emerald-500" />Simpan Bank Soal</span>
       <span className='inline-flex items-center text-sm'><Check className="mr-2 h-4 w-4 text-emerald-500" />Unlimited Soal</span>
     </div>
-    <Button className='mt-8 bg-emerald-500 font-bold hover:bg-emerald-600' onClick={() => toast("Fitur ini masih dalam pengembangan")} size="sm">Pilih Bulanan</Button>
+    <Button className='mt-8 bg-emerald-500 font-bold hover:bg-emerald-600' onClick={onClick} size="sm">Pilih Bulanan</Button>
   </div>
 }
 
-export const CardPricingMingguan = () => {
+export const CardPricingMingguan = ({ onClick }) => {
+
+
   return <div className='flex min-h-[40px] w-full flex-col justify-between rounded-2xl border p-8'>
     <div className='flex w-full flex-row justify-between'>
       <span className='text-xl font-bold'>Mingguan</span>
@@ -58,19 +61,58 @@ export const CardPricingMingguan = () => {
       <span className='inline-flex items-center text-sm'><Check className="mr-2 h-4 w-4 text-emerald-500" />Simpan Bank Soal</span>
       <span className='inline-flex items-center text-sm'><Check className="mr-2 h-4 w-4 text-emerald-500" />Unlimited Soal</span>
     </div>
-    <Button className='mt-8 bg-emerald-500 font-bold hover:bg-emerald-600' onClick={() => toast("Fitur ini masih dalam pengembangan")}>Pilih Mingguan</Button>
+    <Button className='mt-8 bg-emerald-500 font-bold hover:bg-emerald-600' onClick={onClick}>Pilih Mingguan</Button>
   </div>
 }
 
 const SectionPricing = ({ title = "Daftar Harga", description = "Jelajahi paket berlangganan sesuai kebutuhan anda" }) => {
+  const [isLoading, setIsloading] = useState(false)
+  const [orderId, setOrderId] = useState('')
+  const router = useRouter()
+  
+  const handleOnClick = async (code) => {
+    setIsloading(true)
+    await fetch("/api/payment/request", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        code: code
+      })
+    }).then(res => res.json()).then(res => {
+      if (res.redirect_url) {
+        //open new tab
+        window.open(res.redirect_url, '_blank')
+        setOrderId(res.order_id)
+      } else {
+        toast.error("Terjadi kesalahan")
+      }
+    }).catch(() => {
+      toast.error("Terjadi kesalahan")
+    }).finally(() => {
+      setIsloading(false)
+    })
+  }
+
+  if (isLoading) {
+    return <div className='container'>Loading...</div>
+  }
+
+  if (orderId) {
+    return <div className='container mt-20 flex min-h-screen flex-col items-center'>
+      <Button onClick={() => { router.replace("/generate") }}>Saya sudah membayar</Button>
+    </div>
+  }
+
   return (
     <div className='mt-40 flex flex-col items-center justify-center'>
       <h1 className='text-center text-3xl font-bold'>{title}</h1>
       <h2 className='mt-4 text-lg'>{description}</h2>
       <div className='mt-8 grid w-full grid-cols-1 gap-3 lg:grid-cols-3 lg:gap-6'>
         <CardPricingFree />
-        <CardPricingBulanan />
-        <CardPricingMingguan />
+        <CardPricingBulanan onClick={()=>handleOnClick('monthly')}/>
+        <CardPricingMingguan onClick={() => handleOnClick('weekly')} />
       </div>
     </div>
   )

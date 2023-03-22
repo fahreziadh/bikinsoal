@@ -5,8 +5,6 @@ import React from 'react'
 import MainPage from './main'
 
 const getLimit = async (session: Session | null) => {
-  //Get Total Questions Generated from Field Total in QuestionGenerated today
-
   const total = await prisma.questionGenerated.aggregate({
     where: {
       user: {
@@ -22,14 +20,45 @@ const getLimit = async (session: Session | null) => {
     },
   })
 
+  let limit_max = 15
+  let have_subscription = false
 
-  return 15 - (total._sum.total || 0)
+  // get user's transaction depend on pack code and validate the date 
+  const transaction = await prisma.transaction.findMany({
+    where: {
+      user: {
+        email: session?.user?.email
+      },
+      is_active: true,
+      expired_at: {
+        gte: new Date()
+      }
+    },
+    select: {
+      package: true,
+      updatedAt: true,
+      is_active: true,
+      expired_at: true
+    }
+  })
+
+  if (transaction && transaction.length > 0) {
+    have_subscription = true
+  }
+
+  return {
+    limit_left: limit_max - (total._sum.total || 0),
+    limit_max,
+    expired_at: transaction.find((item) => item.is_active)?.expired_at?.toString(),
+    have_subscription: have_subscription,
+    is_limit_reached: (total._sum.total || 0) >= limit_max,
+  }
 }
 
 const page = async () => {
   const session = await getServerSession(authOptions)
   const limit = await getLimit(session)
-  
+
   return (
     <MainPage limit={limit} session={session} />
   )

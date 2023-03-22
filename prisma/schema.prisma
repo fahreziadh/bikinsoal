@@ -48,6 +48,7 @@ model User {
   QuestionGenerated QuestionGenerated[]
   QuestionBank      QuestionBank[]
   QuestionGroup     QuestionGroup[]
+  Transaction       Transaction[]
 }
 
 model VerificationToken {
@@ -90,11 +91,55 @@ model QuestionBank {
 model QuestionGroup {
   id        String   @id @default(cuid())
   name      String   @db.VarChar(255)
-  questions Json     @db.Json @default("[]")
+  questions Json     @default("[]") @db.Json
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   user_id   String   @db.VarChar(255)
   user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id])
+}
+
+model Package {
+  id          String        @id @default(cuid())
+  name        String        @db.VarChar(255)
+  code        String        @db.VarChar(255)
+  price       Int
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt
+  Transaction Transaction[]
+}
+
+model Transaction {
+  id           String            @id
+  amount       Int
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @default(now()) @updatedAt
+  user_id      String            @db.VarChar(255)
+  status       TransactionStatus @default(pending)
+  gross_amount Int               @db.Int
+  payment_type String            @db.VarChar(255)
+  is_active    Boolean           @default(false)
+  expired_at   DateTime?         @db.DateTime
+  package_id   String            @db.VarChar(255)
+  user         User              @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  package      Package           @relation(fields: [package_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@index([package_id])
+}
+
+enum TransactionStatus {
+  authorize
+  capture
+  settlement
+  deny
+  pending
+  cancel
+  refund
+  partial_refund
+  chargeback
+  partial_chargeback
+  expire
+  failure
 }
