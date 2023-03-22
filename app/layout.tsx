@@ -47,9 +47,7 @@ export const metadata = {
   }
 }
 
-const inter = Inter({
-  variable: '--inter-font',
-})
+const inter = Inter({ subsets: ['latin'] })
 
 export default async function RootLayout({
   children,

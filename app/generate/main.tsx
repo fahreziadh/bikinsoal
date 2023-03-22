@@ -14,13 +14,15 @@ import { Session } from 'next-auth'
 import toast from 'react-hot-toast'
 import LoadingItemQuestion from '@/components/loading/loading-item-question'
 import ItemQuestion from '@/components/question/item-question'
+import { Progress } from '@/components/ui/progress'
 
 
 interface Props {
     session: Session | null
+    limit: number
 }
 
-const MainPage = ({ session }: Props) => {
+const MainPage = ({ session, limit: initialLimit }: Props) => {
     const router = useRouter()
     const [subject, setSubject] = useState<string>("");
     const [grade, setGrade] = useState<string>("umum");
@@ -30,6 +32,7 @@ const MainPage = ({ session }: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [total, setTotal] = useState(0)
     const [isInitial, setIsInitial] = useState(true)
+    const [limit, setLimit] = useState(initialLimit)
 
     const soalRef = useRef<null | HTMLDivElement>(null);
 
@@ -41,6 +44,10 @@ const MainPage = ({ session }: Props) => {
 
 
     const onSubmit = async () => {
+        if (limit === 0) {
+            router.replace('/generate/limit')
+        }
+
         if (!session?.user) {
             router.push("/api/auth/signin")
             return;
@@ -54,6 +61,7 @@ const MainPage = ({ session }: Props) => {
             toast("Pilih mata pelajaran terlebih dahulu", { position: 'bottom-center' })
             return;
         }
+
         setIsInitial(false)
 
         await generate();
@@ -118,7 +126,9 @@ const MainPage = ({ session }: Props) => {
 
         setIsLoading(false)
         scrollToBios();
-        addQuestionTotal()
+        addQuestionTotal(total)
+        setLimit(limit - total)
+
     };
 
     const addQuestionTotal = async (total = 5) => {
@@ -130,6 +140,10 @@ const MainPage = ({ session }: Props) => {
             <div className='flex h-auto w-full flex-col lg:w-3/12'>
                 <form className="flex w-full flex-col gap-2 rounded-lg">
                     <h1 className='mb-4 inline-flex w-full items-center justify-between border-b border-zinc-50 text-lg font-bold'><span>Filter Generate</span></h1>
+                    <div className='mb-4 flex flex-col'>
+                        <Label className='text-sm'>Sisa Limit</Label>
+                        <span className='inline-flex items-center gap-2'><Progress value={((15 - limit) / 15) * 100} />{15 - limit}/15</span>
+                    </div>
                     <div className='flex flex-col gap-2'>
                         <Label htmlFor="message-2">Mata Pelajaran / Subject</Label>
                         <SubjectChoice disabled={isLoading} onChange={(value) => setSubject(value)} value={subject} />
@@ -159,7 +173,7 @@ const MainPage = ({ session }: Props) => {
 
                         <div className='mt-4 flex w-full flex-col gap-2'>
                             <Label>Jumlah Soal <span className='text-lg font-bold'>--{total}--</span></Label>
-                            <Slider disabled={isLoading} defaultValue={[0]} max={20} step={5} onValueChange={(e) => setTotal(e[0])} value={[total]} />
+                            <Slider disabled={isLoading} defaultValue={[0]} max={limit} step={5} onValueChange={(e) => setTotal(e[0])} value={[total]} />
                         </div>
                     </motion.div>
                     <Button
@@ -182,6 +196,7 @@ const MainPage = ({ session }: Props) => {
                         <span className='cursor-pointer rounded-lg border p-4 text-sm hover:bg-zinc-100' onClick={() => { setSubject('Matematika'); setTopic('Pecahan'); setGrade('5 SD'); setTotal(5) }}><span className='font-bold'>Matematika</span>: Pecahan untuk kelas 5 SD</span>
                     </div>
                 }
+                {isLoading && <span className='text-xl'>Tunggu Sebentar...</span>}
                 {isLoading && [0, 1, 2, 3].map((item) => (<LoadingItemQuestion key={item} />))}
                 {questions.map((question, index) => {
                     return (

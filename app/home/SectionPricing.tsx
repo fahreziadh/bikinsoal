@@ -18,12 +18,12 @@ const CardPricingFree = () => {
       <span className='inline-flex items-center text-sm'><Check className="mr-2 h-4 w-4 text-emerald-500" />Simpan Bank Soal</span>
       <span className='inline-flex items-center text-sm'><Check className="mr-2 h-4 w-4 text-emerald-500" />Generate Up to 15 Soal/hari</span>
     </div>
-    <Link href={"/generate"} className="w-full"><Button className='mt-8 w-full border bg-transparent font-bold text-emerald-500 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white' size="sm">Coba Gratis</Button></Link>
+    <Link href={"/generate"} className="w-full"><Button className='mt-8 w-full bg-emerald-500 font-bold hover:bg-emerald-600' size="sm">Coba Gratis</Button></Link>
   </div>
 }
 
 
-const CardPricingBulanan = () => {
+export const CardPricingBulanan = () => {
   return <div className='flex min-h-[40px] w-full flex-col rounded-2xl border p-8'>
     <div className='flex w-full flex-row justify-between'>
       <span className='text-xl font-bold'>Bulanan</span>
@@ -39,11 +39,11 @@ const CardPricingBulanan = () => {
       <span className='inline-flex items-center text-sm'><Check className="mr-2 h-4 w-4 text-emerald-500" />Simpan Bank Soal</span>
       <span className='inline-flex items-center text-sm'><Check className="mr-2 h-4 w-4 text-emerald-500" />Unlimited Soal</span>
     </div>
-    <Button className='mt-8 border bg-transparent font-bold text-emerald-500 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white' onClick={()=> toast("Fitur ini masih dalam pengembangan")} size="sm">Pilih Bulanan</Button>
+    <Button className='mt-8 bg-emerald-500 font-bold hover:bg-emerald-600' onClick={() => toast("Fitur ini masih dalam pengembangan")} size="sm">Pilih Bulanan</Button>
   </div>
 }
 
-const CardPricingMingguan = () => {
+export const CardPricingMingguan = () => {
   return <div className='flex min-h-[40px] w-full flex-col justify-between rounded-2xl border p-8'>
     <div className='flex w-full flex-row justify-between'>
       <span className='text-xl font-bold'>Mingguan</span>
@@ -58,15 +58,15 @@ const CardPricingMingguan = () => {
       <span className='inline-flex items-center text-sm'><Check className="mr-2 h-4 w-4 text-emerald-500" />Simpan Bank Soal</span>
       <span className='inline-flex items-center text-sm'><Check className="mr-2 h-4 w-4 text-emerald-500" />Unlimited Soal</span>
     </div>
-    <Button className='mt-8 border bg-transparent font-bold text-emerald-500 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white' size="sm" onClick={()=> toast("Fitur ini masih dalam pengembangan")}>Pilih Mingguan</Button>
+    <Button className='mt-8 bg-emerald-500 font-bold hover:bg-emerald-600' onClick={() => toast("Fitur ini masih dalam pengembangan")}>Pilih Mingguan</Button>
   </div>
 }
 
-const SectionPricing = () => {
+const SectionPricing = ({ title = "Daftar Harga", description = "Jelajahi paket berlangganan sesuai kebutuhan anda" }) => {
   return (
     <div className='mt-40 flex flex-col items-center justify-center'>
-      <h1 className='text-center text-3xl font-bold'>Daftar Harga</h1>
-      <h2 className='mt-4 text-lg'>Jelajahi paket berlangganan sesuai kebutuhan anda</h2>
+      <h1 className='text-center text-3xl font-bold'>{title}</h1>
+      <h2 className='mt-4 text-lg'>{description}</h2>
       <div className='mt-8 grid w-full grid-cols-1 gap-3 lg:grid-cols-3 lg:gap-6'>
         <CardPricingFree />
         <CardPricingBulanan />
