@@ -213,10 +213,10 @@ const MainPage = ({ session, limit: initialLimit }: Props) => {
                 {/* Recommendation */}
                 {isInitial && <div> Generate soal apapun seperti : </div>}
                 {isInitial &&
-                    <div className='grid grid-cols-1 gap-8 self-center lg:grid-cols-3'>
-                        <span className='cursor-pointer rounded-lg border p-4 text-sm hover:bg-zinc-100' onClick={() => { setSubject('Bahasa Inggris'); setTopic('Expression'); setGrade('3 SMP'); setTotal(5) }}><span className='font-bold'>Bahasa Inggris</span>: Expression untuk kelas 3 SMP</span>
-                        <span className='cursor-pointer rounded-lg border p-4 text-sm hover:bg-zinc-100' onClick={() => { setSubject('IPA'); setTopic('Sistem Pencernaan'); setGrade('3 SMA'); setTotal(5) }}><span className='font-bold'>IPA</span>: Sistem Pencernaan untuk kelas 1 SMA</span>
-                        <span className='cursor-pointer rounded-lg border p-4 text-sm hover:bg-zinc-100' onClick={() => { setSubject('Matematika'); setTopic('Pecahan'); setGrade('5 SD'); setTotal(5) }}><span className='font-bold'>Matematika</span>: Pecahan untuk kelas 5 SD</span>
+                    <div className='flex flex-col gap-4'>
+                        <span className='cursor-pointer rounded-md border p-4 text-sm hover:bg-zinc-50' onClick={() => { setSubject('Bahasa Inggris'); setTopic('Expression'); setGrade('3 SMP'); setTotal(5) }}><span className='font-bold'>Bahasa Inggris</span>: Expression untuk kelas 3 SMP</span>
+                        <span className='cursor-pointer rounded-md border p-4 text-sm hover:bg-zinc-50' onClick={() => { setSubject('IPA'); setTopic('Sistem Pencernaan'); setGrade('3 SMA'); setTotal(5) }}><span className='font-bold'>IPA</span>: Sistem Pencernaan untuk kelas 1 SMA</span>
+                        <span className='cursor-pointer rounded-md border p-4 text-sm hover:bg-zinc-50' onClick={() => { setSubject('Matematika'); setTopic('Pecahan'); setGrade('5 SD'); setTotal(5) }}><span className='font-bold'>Matematika</span>: Pecahan untuk kelas 5 SD</span>
                     </div>
                 }
                 {isLoading && <span className='text-xl'>Tunggu Sebentar...</span>}
