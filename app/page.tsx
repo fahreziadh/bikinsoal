@@ -1,6 +1,7 @@
 "use client"
 import { SessionProvider } from 'next-auth/react'
 import React from 'react'
+import SectionContact from './home/SectionContact'
 import SectionFeature from './home/SectionFeature'
 import SectionHeader from './home/SectionHeader'
 import SectionPricing from './home/SectionPricing'
@@ -15,6 +16,7 @@ const Page = () => {
         <SectionVideo />
         <SectionFeature />
         <SectionPricing />
+        <SectionContact />
       </div>
     </SessionProvider>
   )
