@@ -2,6 +2,7 @@
 import { getInitialsFromEmail } from '@/utils/GetInitialsFromEmail'
 import { LogOut } from 'lucide-react'
 import { signIn, signOut, useSession } from 'next-auth/react'
+import Link from 'next/link'
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Button } from './ui/button'
@@ -32,7 +33,7 @@ const ButtonSession = () => {
                     </DropdownMenuContent>
                 </DropdownMenu>}
             {session?.user == null &&
-                <Button onClick={() => signIn('google')}>Login</Button>
+                <Link href={"/login"}><Button>Login</Button></Link>
             }
         </>
     )

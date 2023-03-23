@@ -13,7 +13,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { LogIn, LogOut, Menu } from "lucide-react"
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import Link from "next/link"
 
 export function BurgerMenu() {
@@ -48,14 +48,16 @@ export function BurgerMenu() {
 
                 <DropdownMenuSeparator />
                 {session?.user ?
-                    <DropdownMenuItem onClick={()=>signOut()}>
+                    <DropdownMenuItem onClick={() => signOut()}>
                         <LogOut className="mr-2 h-4 w-4" />
                         <span>Log out</span>
                     </DropdownMenuItem>
                     :
-                    <DropdownMenuItem onClick={()=>signIn('google')}>
-                        <LogIn className="mr-2 h-4 w-4" />
-                        <span>Login</span>
+                    <DropdownMenuItem>
+                        <Link href={"/login"} className="inline-flex items-center">
+                            <LogIn className="mr-2 h-4 w-4" />
+                            <span>Login</span>
+                        </Link>
                     </DropdownMenuItem>
                 }
 
