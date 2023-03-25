@@ -15,7 +15,7 @@ const Page = () => {
         <SectionHeader />
         <SectionVideo />
         <SectionFeature />
-        <SectionPricing />
+        {/* <SectionPricing /> */}
         <SectionContact />
       </div>
     </SessionProvider>
