@@ -2,7 +2,7 @@
 
 >Sebuah Project Fullstack **Next.js 13** dan **GPT** API
 
-![](https://da8idql80spie.cloudfront.net/demo.gif)
+![](https://github.com/fahreziadh/bikinsoal.com/raw/main/demo-1.gif)
 
 
 ## Feature
