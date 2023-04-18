@@ -4,6 +4,7 @@ import { OpenAIStream, OpenAIStreamPayload } from "utils/OpenAiStream";
 if (!process.env.OPENAI_API_KEY) {
   throw new Error("OPENAI_API_KEY is not defined")
 }
+
 export const config = {
   runtime: 'edge',
 }

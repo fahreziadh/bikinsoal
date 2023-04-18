@@ -1,78 +1,67 @@
-# next-template
+# **Bikinsoal.com**
 
-A Next.js 13 template for building apps with Radix UI and Tailwind CSS.
+>Sebuah Project Fullstack **Next.js 13** dan **GPT** API
 
-## Features
+![](https://da8idql80spie.cloudfront.net/demo.gif)
 
-- Radix UI Primitives
-- Tailwind CSS
-- Fonts with `@next/font`
-- Icons from [Lucide](https://lucide.dev)
-- Dark mode with `next-themes`
-- Automatic import sorting with `@ianvs/prettier-plugin-sort-imports`
 
-## Tailwind CSS Features
+## Feature
 
-- Class merging with `taiwind-merge`
-- Animation with `tailwindcss-animate`
-- Conditional classes with `clsx`
-- Variants with `class-variance-authority`
-- Automatic class sorting with `eslint-plugin-tailwindcss`
 
-## Import Sort
+- Generate Soal
+- Simpan Soal
+- Payment Gateway
+- Auth
+- Email
+- Subscription
+- etc.
 
-The starter comes with `@ianvs/prettier-plugin-sort-imports` for automatically sort your imports.
+## Tech Stack
 
-### Input
+- Next.js 13
+- Tailwind.css
+- Prisma
+- Planetscale
+- Next-Auth
+- Sendgrid
+- Midtrans
+- Vercel
+
+## **Getting Started**
+```tsx
+yarn install
+```
+### Copy ***.env.example*** ke  ***.env***
 
 ```tsx
-import * as React from "react"
-import Link from "next/link"
-
-import { siteConfig } from "@/config/site"
-import { buttonVariants } from "@/components/ui/button"
-import "@/styles/globals.css"
-import { twMerge } from "tailwind-merge"
-
-import { NavItem } from "@/types/nav"
-import { cn } from "@/lib/utils"
+OPENAI_API_KEY=
+DATABASE_URL=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=
+SERVER_KEY_MIDTRANS=
+SERVER_KEY_MIDTRANS_HASHED=
+SENDGRID_API_KEY=
+BASE_URL="http://localhost:3000"
+SERVER_MIDTRANS_URL="https://app.sandbox.midtrans.com/snap/v1/transactions"
 ```
 
-### Output
+### Sync Database
+
+> Pastikan konek ke database_url dan buat database kosong dengan nama **bikinsoal**
+
+push prisma ke database :
+```tsx
+yarn prisma db push
+```
 
 ```tsx
-import * as React from "react"
-// React is always first.
-import Link from "next/link"
-// Followed by next modules.
-import { twMerge } from "tailwind-merge"
-
-// Followed by third-party modules
-// Space
-import "@/styles/globals.css"
-// styles
-import { NavItem } from "@/types/nav"
-// types
-import { siteConfig } from "@/config/site"
-// config
-import { cn } from "@/lib/utils"
-// lib
-import { buttonVariants } from "@/components/ui/button"
-
-// components
+yarn prisma generate
 ```
 
-### Class Merging
+### Start
 
-The `cn` util handles conditional classes and class merging.
-
-### Input
-
-```ts
-cn("px-2 bg-slate-100 py-2 bg-slate-200")
-// Outputs `p-2 bg-slate-200`
+```tsx
+yarn dev
 ```
-
-## License
-
-Licensed under the [MIT license](https://github.com/shadcn/ui/blob/main/LICENSE.md).
