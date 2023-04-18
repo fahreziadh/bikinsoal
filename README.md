@@ -4,6 +4,8 @@
 
 ![](https://github.com/fahreziadh/bikinsoal.com/raw/main/demo-1.gif)
 
+## Demo
+[Bikinsoal.com](https://bikinsoal.com)
 
 ## Feature
 
@@ -18,14 +20,14 @@
 
 ## Tech Stack
 
-- Next.js 13
-- Tailwind.css
-- Prisma
-- Planetscale
-- Next-Auth
-- Sendgrid
-- Midtrans
-- Vercel
+- [Next.js 13](https://nextjs.org/)
+- [Tailwind.css](https://tailwindcss.com/)
+- [Prisma](https://www.prisma.io/)
+- [Planetscale](https://planetscale.com/)
+- [Next-Auth](https://next-auth.js.org/)
+- [Sendgrid](https://sendgrid.com/)
+- [Midtrans](https://midtrans.com/id)
+- [Vercel](http://vercel.com/)
 
 ## **Getting Started**
 ```tsx
