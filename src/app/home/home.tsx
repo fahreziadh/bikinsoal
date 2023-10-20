@@ -29,8 +29,19 @@ export default function Home() {
             className="mx-auto"
             placeholder="4 Soal matematika, kelas 4 SMK, dengan topik 'Aljabar'"
           />
-          <Button type="button" onClick={generate} className="w-[120px]">
-            Generate <ChevronRight className="ml-2" size={16}/>
+          <Button
+            disabled={isLoading && text != ""}
+            type="button"
+            onClick={generate}
+            className="w-[120px]"
+          >
+            {isLoading && text ? (
+              "Loading..."
+            ) : (
+              <>
+                Generate <ChevronRight className="ml-2" size={16} />
+              </>
+            )}
           </Button>
         </div>
       </div>
