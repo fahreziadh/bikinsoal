@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { api } from "@/trpc/react";
+import { ChevronRight } from "lucide-react";
 
 export default function Home() {
   const [text, setText] = useState("");
@@ -28,18 +29,12 @@ export default function Home() {
             className="mx-auto"
             placeholder="4 Soal matematika, kelas 4 SMK, dengan topik 'Aljabar'"
           />
-          <motion.div
-            transition={{ delay: 0.3, duration: 0.4, ease: "easeInOut" }}
-            initial={{ width: "200px" }}
-            animate={{ width: "120px" }}
-          >
-            <Button type="button" onClick={generate} className="w-full">
-              Generate
-            </Button>
-          </motion.div>
+          <Button type="button" onClick={generate} className="w-[120px]">
+            Generate <ChevronRight className="ml-2" size={16}/>
+          </Button>
         </div>
       </div>
-      <ListSoalPlaceholder state={isLoading ? "loading" : "idle"} />
+      <ListSoalPlaceholder state={isLoading && text ? "loading" : "idle"} />
     </div>
   );
 }
