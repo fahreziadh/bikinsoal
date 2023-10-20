@@ -4,6 +4,10 @@ import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 
 import { TRPCReactProvider } from "@/trpc/react";
+import { Card } from "@/components/ui/card";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { GithubIcon, Youtube, Twitter } from "lucide-react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,8 +27,29 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`min-h-screen bg-background antialiased font-sans ${inter.variable}`}>
-        <TRPCReactProvider headers={headers()}>{children}</TRPCReactProvider>
+      <body
+        className={`dark relative min-h-screen bg-background font-sans antialiased ${inter.variable}`}
+      >
+        <TRPCReactProvider headers={headers()}>
+          <Card className="flex gap-2 items-center mt-4 mx-auto w-max px-2 py-1">
+          <Link target="_blank" href="https://github.com/fahreziadh/bikinsoal.com">
+              <Button size={"icon"} variant="ghost">
+                <GithubIcon size={18} />
+              </Button>
+            </Link>
+            <Link target="_blank" href="https://www.youtube.com/channel/UCOhmLMgnGXcQIzeQihpHiYw">
+              <Button size={"icon"} variant="ghost">
+                <Youtube size={18} />
+              </Button>
+            </Link>
+            <Link href="https://twitter.com/fahreziadhaa" target="_blank">
+              <Button size={"icon"} variant="ghost">
+                <Twitter size={18} />
+              </Button>
+            </Link>
+          </Card>
+          {children}
+        </TRPCReactProvider>
       </body>
     </html>
   );

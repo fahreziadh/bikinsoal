@@ -1,9 +1,8 @@
-import { Button } from "@/components/ui/button";
+import React from 'react'
+import Home from './home/home'
 
-export default function Home() {
-  return (
-  <div className="container">
-    <Button>Click Me</Button>
-  </div>
-  );
+const page = () => {
+  return <Home />
 }
+
+export default page
