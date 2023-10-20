@@ -31,13 +31,19 @@ export default function RootLayout({
         className={`dark relative min-h-screen bg-background font-sans antialiased ${inter.variable}`}
       >
         <TRPCReactProvider headers={headers()}>
-          <Card className="flex gap-2 items-center mt-4 mx-auto w-max px-2 py-1">
-          <Link target="_blank" href="https://github.com/fahreziadh/bikinsoal.com">
+          <Card className="mx-auto mt-4 flex w-max items-center gap-2 px-2 py-1">
+            <Link
+              target="_blank"
+              href="https://github.com/fahreziadh/bikinsoal.com"
+            >
               <Button size={"icon"} variant="ghost">
                 <GithubIcon size={18} />
               </Button>
             </Link>
-            <Link target="_blank" href="https://www.youtube.com/channel/UCOhmLMgnGXcQIzeQihpHiYw">
+            <Link
+              target="_blank"
+              href="https://www.youtube.com/channel/UCOhmLMgnGXcQIzeQihpHiYw"
+            >
               <Button size={"icon"} variant="ghost">
                 <Youtube size={18} />
               </Button>
