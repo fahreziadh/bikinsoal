@@ -12,8 +12,8 @@ import { type NextRequest } from "next/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import { getServerAuthSession } from "~/server/auth";
-import { db } from "~/server/db";
+import { getServerAuthSession } from "@/server/auth";
+import { db } from "@/server/db";
 
 /**
  * 1. CONTEXT
@@ -39,7 +39,6 @@ interface CreateContextOptions {
  */
 export const createInnerTRPCContext = async (opts: CreateContextOptions) => {
   const session = await getServerAuthSession();
-
   return {
     session,
     headers: opts.headers,
