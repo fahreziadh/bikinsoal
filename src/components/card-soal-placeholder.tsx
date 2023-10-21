@@ -39,7 +39,7 @@ const CardSoalPlaceHolder = ({
 };
 interface CardSoalPlaceHolderProps {
   className?: string;
-  state?: "idle" | "loading" | "error";
+  state?: "idle" | "loading" | "error" | "success";
 }
 
 export default CardSoalPlaceHolder;

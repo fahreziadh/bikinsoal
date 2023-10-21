@@ -15,7 +15,7 @@ export async function POST(req: Request) {
   const classificationResponse = await openai.completions.create({
     model: "gpt-3.5-turbo-instruct",
     stream: false,
-    temperature: 0.8,
+    temperature: 0.2,
     max_tokens: 300,
     prompt: `klasifikasi text berikut : "${prompt}". hanya berikan jawaban dengan format json {"total":number,"subject":string,"grade":string,"topic":string}, jika tidak ada topik yang berarti beri nilai 'Umum'. jika tidak ada grade beri nilai 'Umum', jika ada grade pastikan menambahkan angkanya`,
   });
@@ -33,16 +33,15 @@ export async function POST(req: Request) {
   if (error) {
     return new Response(error, { status: 400 });
   }
-  if (total > 5){
-    return new Response("Jumlah soal maksimal 5", { status: 400 });
+  if (total > 15){
+    return new Response("(e)Jumlah soal maksimal 15");
   }
-  const generateQuizPrompt = `Berikan soal berjumlah ${total} untuk ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(q)question(q)question. jangan ada urutan nomor pada awal soal.`;
-  console.log(generateQuizPrompt)
+  const generateQuizPrompt = `Berikan soal berjumlah ${total} untuk ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(s)(q)question(s)(q)question(s). jangan ada urutan nomor pada awal soal. tanda (q) untuk question, dan (s) untuk stop.`;
 
   const generateQuiz = await openai.completions.create({
     model: "gpt-3.5-turbo-instruct",
     stream: true,
-    temperature: 0.5,
+    temperature: 0.7,
     max_tokens: 1000,
     prompt: generateQuizPrompt,
   });
