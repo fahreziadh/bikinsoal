@@ -1,10 +1,8 @@
-import Navbar from "@/components/nav-bar"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import "@/styles/globals.css"
 import { Inter } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/react';
-import Toaster from "@/components/toaster";
-import Footer from "@/components/footer";
+import Link from "next/link"
 
 export const metadata = {
   title: 'BikinSoal - Generate Soal Online',
@@ -57,13 +55,14 @@ export default async function RootLayout({
   return (
     <html lang="en" className="light">
       <body className={cn('dark:bg-[#0c0c0c] dark:text-white', inter.className)}>
-        <Navbar />
-        <main className="mt-24">
-          {children}
-          <Analytics />
-          <Toaster />
-        </main>
-        <Footer />
+      <div className='flex min-h-screen w-full flex-col items-center justify-center'>
+      <h1 className="text-3xl font-bold">
+        Under Maintenance
+      </h1>
+      <Link href="https://revamp.bikinsoal.com/">
+         <Button className="mt-4 rounded-full bg-rose-600 hover:bg-rose-500">Lihat Website Revamp</Button>
+      </Link>
+    </div>
       </body>
     </html>
   )
