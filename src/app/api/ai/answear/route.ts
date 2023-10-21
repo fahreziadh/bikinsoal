@@ -11,12 +11,12 @@ export const runtime = "edge";
 
 export async function POST(req: Request) {
     const { prompt } = await req.json();
-    const customPrompt = `Berikan 1 jawaban untuk pertanyaan '${prompt}', dengan format (a)jawaban, karena (a) adalah jawaban, tidak perlu menambahkan text lain selain (a) jawaban`
+    const customPrompt = `Berikan 1 jawaban untuk pertanyaan '${prompt}', dengan format (a)jawaban, karena (a) adalah jawaban, tidak perlu menambahkan text lain selain (a) jawaban, berikan jawaban se efektif dan sesingkat mungkin.`
     const response = await openai.completions.create({
         model: "gpt-3.5-turbo-instruct",
         stream: true,
         temperature: 0.2,
-        max_tokens: 300,
+        max_tokens: 100,
         prompt: customPrompt,
     });
 
