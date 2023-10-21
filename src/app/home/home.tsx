@@ -5,6 +5,7 @@ import ListSoalPlaceholder from "./ListSoalPlaceholder";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { useCompletion } from "ai/react";
+import CardSoal from "@/components/card-soal";
 
 export default function Home() {
   const { completion, input, handleInputChange, handleSubmit, isLoading } =
@@ -19,7 +20,7 @@ export default function Home() {
         <h1 className="text-2xl font-medium">Bikin Soal</h1>
         <form
           onSubmit={handleSubmit}
-          className="mt-6 flex w-full max-w-[500px]  flex-col items-center gap-2 md:flex-row"
+          className="mt-6 flex w-full max-w-[500px]  flex-col items-center gap-2"
         >
           <Input
             onChange={handleInputChange}
@@ -42,7 +43,19 @@ export default function Home() {
           </Button>
         </form>
       </div>
-      {completion}
+      <div className="mt-8 flex flex-col gap-4">
+        {completion.split("(q)").map((soal, i) => {
+          if (soal == "") return null;
+          return (
+            <CardSoal
+              key={i}
+              soal={soal}
+              index={i}
+              isSoalFullyLoaded={completion.split("(q)").length == i + 1}
+            />
+          );
+        })}
+      </div>
       <ListSoalPlaceholder state={isLoading && input ? "loading" : "idle"} />
     </div>
   );

@@ -6,7 +6,7 @@ import React from "react";
 
 const ListSoalPlaceholder = ({ state = "idle" }: ListSoalPlaceholderProps) => {
   return (
-    <div className="mx-auto mt-8 flex gap-2 max-w-[500px] flex-col">
+    <div className="mx-auto mt-4 flex gap-4 flex-col">
       <motion.div
         animate={{
           opacity: cn(state === "idle" && "50%", state === "loading" && "100%"),
@@ -22,7 +22,7 @@ const ListSoalPlaceholder = ({ state = "idle" }: ListSoalPlaceholderProps) => {
         }}
         transition={{ delay: 0.2, ease: "easeInOut" }}
       >
-        <CardSoalPlaceHolder state={state} />
+        <CardSoalPlaceHolder state={state}  />
       </motion.div>
       <motion.div
         animate={{
