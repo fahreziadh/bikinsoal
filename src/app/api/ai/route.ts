@@ -4,6 +4,8 @@ import { env } from "@/env.mjs";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { Ratelimit } from "@upstash/ratelimit";
 import { kv } from "@vercel/kv";
+import { getServerAuthSession } from "@/server/auth";
+import { redirect } from "next/navigation";
 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY || "",
@@ -13,7 +15,6 @@ export const runtime = "edge";
 
 export async function POST(req: Request) {
   // Rate Limit
-
   if (env.KV_REST_API_URL && env.KV_REST_API_TOKEN) {
     const ip = req.headers.get("x-forwarded-for");
     const ratelimit = new Ratelimit({

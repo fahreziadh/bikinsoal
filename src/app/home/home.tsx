@@ -9,8 +9,10 @@ import { cn } from "@/lib/utils";
 import ListSoal from "./ListSoal";
 import { SwitchOption } from "./SwitchOption";
 import { useState } from "react";
+import { type Session } from "next-auth";
+import Link from "next/link";
 
-export default function Home() {
+export default function Home({ session }: Props) {
   const [withOption, setWithOption] = useState(false);
   const { completion, input, handleInputChange, handleSubmit, isLoading } =
     useCompletion({
@@ -27,24 +29,34 @@ export default function Home() {
           className="mt-6 flex w-full max-w-[500px]  flex-col items-center gap-2"
         >
           <Input
+            required
             onChange={handleInputChange}
             value={input}
             className="mx-auto"
             placeholder="4 Soal matematika, kelas 2 Sma, dengan topik 'Aljabar'"
           />
-          <Button
-            disabled={isLoading && input != ""}
-            type="submit"
-            className="w-[120px]"
-          >
-            {isLoading && input ? (
-              "Loading..."
-            ) : (
-              <>
+
+          {session ? (
+            <Button
+              disabled={isLoading && input != ""}
+              type="submit"
+              className="w-[120px]"
+            >
+              {isLoading && input ? (
+                "Loading..."
+              ) : (
+                <>
+                  Generate <ChevronRight className="ml-2" size={16} />
+                </>
+              )}
+            </Button>
+          ) : (
+            <Link href={"/api/auth/signin"}>
+              <Button type="button" className="w-[120px]">
                 Generate <ChevronRight className="ml-2" size={16} />
-              </>
-            )}
-          </Button>
+              </Button>
+            </Link>
+          )}
           <SwitchOption onCheckedChange={setWithOption} checked={withOption} />
           <div className="text-sm text-rose-500">
             {completion.split("(e)").at(1)}
@@ -63,4 +75,8 @@ export default function Home() {
       />
     </div>
   );
+}
+
+interface Props {
+  session: Session | null;
 }
