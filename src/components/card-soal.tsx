@@ -3,7 +3,9 @@ import { Card } from "./ui/card";
 import { cn } from "@/lib/utils";
 import { useCompletion } from "ai/react";
 import { Button } from "./ui/button";
-import { Save } from "lucide-react";
+import { RefreshCcw, Save } from "lucide-react";
+import { TooltipShared } from "./tooltip-shared";
+import toast from "react-hot-toast";
 
 const CardSoal = ({ className, soal, index, withOption }: CardSoalProps) => {
   const {
@@ -38,6 +40,14 @@ const CardSoal = ({ className, soal, index, withOption }: CardSoalProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [soal]);
 
+  function onRegenerateAnswear(){
+    toast('Working in Progress')
+  }
+
+  function onSaveQuestion(){
+    toast('Working in Progress')
+  }
+
   return (
     <Card className={cn("flex space-x-4 p-4", className)}>
       <div
@@ -52,7 +62,9 @@ const CardSoal = ({ className, soal, index, withOption }: CardSoalProps) => {
           {soal?.replace("(s)", "")}
         </div>
         {!withOption && textAnswear.length > 0 ? (
-          <div className="text-sm">Jawaban Benar : {textAnswear.replace("(a)", "")}</div>
+          <div className="text-sm">
+            Jawaban Benar : {textAnswear.replace("(a)", "")}
+          </div>
         ) : null}
         {withOption && textOption.length > 0 ? (
           <>
@@ -69,9 +81,18 @@ const CardSoal = ({ className, soal, index, withOption }: CardSoalProps) => {
           </>
         ) : null}
 
-        <Button size="sm" variant="secondary" className="w-max self-end">
-          <Save size={14} />
-        </Button>
+        <div className="inline-flex gap-2 self-end">
+          <TooltipShared tooltipText="Re-generate Jawaban">
+            <Button onClick={onRegenerateAnswear} size="sm" variant="secondary" className="w-max">
+              <RefreshCcw size={14} />
+            </Button>
+          </TooltipShared>
+          <TooltipShared tooltipText="Simpan soal ini">
+            <Button onClick={onSaveQuestion} size="sm" variant="secondary" className="w-max">
+              <Save size={14} />
+            </Button>
+          </TooltipShared>
+        </div>
       </div>
     </Card>
   );

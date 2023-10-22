@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { GithubIcon, Youtube, Twitter } from "lucide-react";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -55,6 +56,7 @@ export default function RootLayout({
             </Link>
           </Card>
           {children}
+          <Toaster />
         </TRPCReactProvider>
       </body>
     </html>
