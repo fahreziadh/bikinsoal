@@ -1,9 +1,11 @@
 import CardSoal from "@/components/card-soal";
+import { TooltipShared } from "@/components/tooltip-shared";
 import { Button } from "@/components/ui/button";
 import { Bug, SaveAll } from "lucide-react";
 import React from "react";
 
 const ListSoal = ({ soalText = "", withOption = false }: ListSoalProps) => {
+
   return (
     <div>
       {soalText.split("(q)").length > 1 ? (
@@ -14,9 +16,11 @@ const ListSoal = ({ soalText = "", withOption = false }: ListSoalProps) => {
               <SaveAll size={16} className="mr-2" />
               Simpan Semua
             </Button>
-            <Button>
-              <Bug size={16} />
-            </Button>
+            <TooltipShared tooltipText="Laporkan jika ada masalah">
+              <Button>
+                <Bug size={16} />
+              </Button>
+            </TooltipShared>
           </div>
         </div>
       ) : null}

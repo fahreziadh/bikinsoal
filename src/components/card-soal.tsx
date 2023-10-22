@@ -25,6 +25,11 @@ const CardSoal = ({ className, soal, index, withOption }: CardSoalProps) => {
   });
 
   useEffect(() => {
+    onRegenerateAnswear();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [soal]);
+
+  function onRegenerateAnswear() {
     const stop = soal?.split("(s)").length ?? 0;
     if (stop > 1 && soal && (!isLoadingAnswear || !isLoadingOption)) {
       if (withOption) {
@@ -37,15 +42,10 @@ const CardSoal = ({ className, soal, index, withOption }: CardSoalProps) => {
         });
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [soal]);
-
-  function onRegenerateAnswear(){
-    toast('Working in Progress')
   }
 
-  function onSaveQuestion(){
-    toast('Working in Progress')
+  function onSaveQuestion() {
+    toast("Working in Progress");
   }
 
   return (
@@ -83,12 +83,24 @@ const CardSoal = ({ className, soal, index, withOption }: CardSoalProps) => {
 
         <div className="inline-flex gap-2 self-end">
           <TooltipShared tooltipText="Re-generate Jawaban">
-            <Button onClick={onRegenerateAnswear} size="sm" variant="secondary" className="w-max">
+            <Button
+              disabled={isLoadingAnswear || isLoadingOption}
+              onClick={onRegenerateAnswear}
+              size="sm"
+              variant="secondary"
+              className="w-max"
+            >
               <RefreshCcw size={14} />
             </Button>
           </TooltipShared>
           <TooltipShared tooltipText="Simpan soal ini">
-            <Button onClick={onSaveQuestion} size="sm" variant="secondary" className="w-max">
+            <Button
+              disabled={isLoadingAnswear || isLoadingOption}
+              onClick={onSaveQuestion}
+              size="sm"
+              variant="secondary"
+              className="w-max"
+            >
               <Save size={14} />
             </Button>
           </TooltipShared>

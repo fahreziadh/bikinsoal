@@ -57,7 +57,6 @@ export async function POST(req: Request) {
 
   const stream = OpenAIStream(generateQuiz);
 
-  // Respond with the stream
   return new StreamingTextResponse(stream);
 }
 
