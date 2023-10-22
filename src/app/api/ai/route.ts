@@ -4,8 +4,6 @@ import { env } from "@/env.mjs";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { Ratelimit } from "@upstash/ratelimit";
 import { kv } from "@vercel/kv";
-import { getServerAuthSession } from "@/server/auth";
-import { redirect } from "next/navigation";
 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY || "",
@@ -22,7 +20,7 @@ export async function POST(req: Request) {
       // rate limit to 5 requests per 10 second
       limiter: Ratelimit.slidingWindow(5, "10s"),
     });
-
+    console.log(`ratelimit_${ip}`)
     const { success } = await ratelimit.limit(
       `ratelimit_${ip}`,
     );
