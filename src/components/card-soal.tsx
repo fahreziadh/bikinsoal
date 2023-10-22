@@ -22,7 +22,7 @@ const CardSoal = ({ className, soal, index, withOption }: CardSoalProps) => {
   }, [soal]);
 
   function onRegenerateAnswear() {
-    const stop = soal?.split("(s)").length ?? 0;
+    const stop = soal?.split("(stop)").length ?? 0;
     if (stop > 1 && soal && !isLoadingAnswear) {
       onGetTextAnswear(soal).catch(() => {
         console.log("error");
@@ -45,7 +45,7 @@ const CardSoal = ({ className, soal, index, withOption }: CardSoalProps) => {
       </div>
       <div className="flex w-full flex-col">
         <div className={cn("mb-3 w-full font-semibold")}>
-          {soal?.replace("(s)", "")}
+          {soal?.replace("(stop)", "")}
         </div>
         {textAnswear.length > 0 ? (
           <>

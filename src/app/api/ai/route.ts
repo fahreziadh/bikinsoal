@@ -44,9 +44,9 @@ export async function POST(req: Request) {
   let generateQuizPrompt = "";
 
   if (withOption) {
-    generateQuizPrompt = `Berikan soal pilihan ganda tanpa pilihan, hanya soalnya saja. berjumlah ${total} untuk ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(s)(q)question(s)(q)question(s). jangan ada urutan nomor pada awal soal. tanda (q) untuk question, dan (s) untuk mengakhiri pertanyaan.`;
+    generateQuizPrompt = `Berikan soal pilihan ganda tanpa pilihan, hanya soalnya saja. berjumlah ${total} untuk ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(stop)(q)question(stop)(q)question(stop). jangan ada urutan nomor pada awal soal. tanda (q) untuk question, dan (stop) untuk mengakhiri pertanyaan.`;
   } else {
-    generateQuizPrompt = `Berikan soal berjumlah ${total} untuk ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(s)(q)question(s)(q)question(s). jangan ada urutan nomor pada awal soal. tanda (q) untuk question, dan (s) untuk mengakhiri pertanyaan.`;
+    generateQuizPrompt = `Berikan soal berjumlah ${total} untuk ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(stop)(q)question(stop)(q)question(stop). jangan ada urutan nomor pada awal soal. tanda (q) untuk question, dan (stop) untuk mengakhiri pertanyaan.`;
   }
 
   const generateQuiz = await openai.completions.create({

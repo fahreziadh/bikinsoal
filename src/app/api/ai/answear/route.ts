@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     stream: true,
     temperature: 0.2,
     max_tokens: 100,
-    prompt: customPrompt.replace("(s)", ""),
+    prompt: customPrompt.replace("(stop)", ""),
   });
 
   const stream = OpenAIStream(response);
