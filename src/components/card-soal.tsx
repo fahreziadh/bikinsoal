@@ -3,7 +3,7 @@ import { Card } from "./ui/card";
 import { cn } from "@/lib/utils";
 import { useCompletion } from "ai/react";
 import { Button } from "./ui/button";
-import { RefreshCcw, Save } from "lucide-react";
+import { RefreshCcw } from "lucide-react";
 import { TooltipShared } from "./tooltip-shared";
 import toast from "react-hot-toast";
 
@@ -13,15 +13,7 @@ const CardSoal = ({ className, soal, index, withOption }: CardSoalProps) => {
     complete: onGetTextAnswear,
     isLoading: isLoadingAnswear,
   } = useCompletion({
-    api: "/api/ai/answear",
-  });
-
-  const {
-    completion: textOption,
-    complete: onGetTextOption,
-    isLoading: isLoadingOption,
-  } = useCompletion({
-    api: "/api/ai/options",
+    api: `/api/ai/answear?withOption=${withOption}`,
   });
 
   useEffect(() => {
@@ -31,16 +23,10 @@ const CardSoal = ({ className, soal, index, withOption }: CardSoalProps) => {
 
   function onRegenerateAnswear() {
     const stop = soal?.split("(s)").length ?? 0;
-    if (stop > 1 && soal && (!isLoadingAnswear || !isLoadingOption)) {
-      if (withOption) {
-        onGetTextOption(soal).catch(() => {
-          console.log("error");
-        });
-      } else {
-        onGetTextAnswear(soal).catch(() => {
-          console.log("error");
-        });
-      }
+    if (stop > 1 && soal && !isLoadingAnswear) {
+      onGetTextAnswear(soal).catch(() => {
+        console.log("error");
+      });
     }
   }
 
@@ -61,36 +47,33 @@ const CardSoal = ({ className, soal, index, withOption }: CardSoalProps) => {
         <div className={cn("mb-3 w-full font-semibold")}>
           {soal?.replace("(s)", "")}
         </div>
-        {!withOption && textAnswear.length > 0 ? (
-          <div className="text-sm">
-            Jawaban Benar : {textAnswear.replace("(a)", "")}
-          </div>
-        ) : null}
-        {withOption && textOption.length > 0 ? (
+        {textAnswear.length > 0 ? (
           <>
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div>A. {textOption.split("(a)").at(1)?.split("(").at(0)}</div>
-              <div>B. {textOption.split("(b)").at(1)?.split("(").at(0)}</div>
-              <div>C. {textOption.split("(c)").at(1)?.split("(").at(0)}</div>
-              <div>D. {textOption.split("(d)").at(1)?.split("(").at(0)}</div>
-            </div>
-            <p className="mt-3 text-sm font-medium">
+            {withOption ? (
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>A. {textAnswear.split("(a)").at(1)?.split("(").at(0)}</div>
+                <div>B. {textAnswear.split("(b)").at(1)?.split("(").at(0)}</div>
+                <div>C. {textAnswear.split("(c)").at(1)?.split("(").at(0)}</div>
+                <div>D. {textAnswear.split("(d)").at(1)?.split("(").at(0)}</div>
+              </div>
+            ) : null}
+            <p className="mt-3 text-sm">
               Jawaban Benar:{" "}
-              {textOption.split("(correct)")?.at(1)?.toUpperCase()}
+              {textAnswear.split("(correct)")?.at(1)}
             </p>
           </>
         ) : null}
 
-        <div className="inline-flex gap-2 self-end">
+        <div className="mt-2 inline-flex gap-2 self-end">
           <TooltipShared tooltipText="Re-generate Jawaban">
             <Button
-              disabled={isLoadingAnswear || isLoadingOption}
+              disabled={isLoadingAnswear}
               onClick={onRegenerateAnswear}
               size="sm"
               variant="secondary"
               className="w-max"
             >
-              <RefreshCcw size={14} className="mr-2"/> Regenerate Jawaban
+              <RefreshCcw size={14} className="mr-2" /> Regenerate Jawaban
             </Button>
           </TooltipShared>
         </div>

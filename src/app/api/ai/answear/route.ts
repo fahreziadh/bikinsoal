@@ -2,8 +2,6 @@
 import OpenAI from "openai";
 import { env } from "@/env.mjs";
 import { OpenAIStream, StreamingTextResponse } from "ai";
-import { Ratelimit } from "@upstash/ratelimit";
-import { kv } from "@vercel/kv";
 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY || "",
@@ -12,39 +10,24 @@ const openai = new OpenAI({
 export const runtime = "edge";
 
 export async function POST(req: Request) {
-  // Rate Limit
-  if (env.KV_REST_API_URL && env.KV_REST_API_TOKEN) {
-    const ip = req.headers.get("x-forwarded-for");
-    const ratelimit = new Ratelimit({
-      redis: kv,
-      // rate limit to 5 requests per 10 seconds
-      limiter: Ratelimit.slidingWindow(15, "10s"),
-    });
+  const { prompt } = await req.json();
+  const params = new URL(req.url).searchParams;
+  const withOption = params.get("withOption") === "true" ? true : false;
 
-    const { success, limit, reset, remaining } = await ratelimit.limit(
-      `ratelimit_${ip}`,
-    );
+  let customPrompt = "";
 
-    if (!success) {
-      return new Response("You have reached your request limit for the day.", {
-        status: 429,
-        headers: {
-          "X-RateLimit-Limit": limit.toString(),
-          "X-RateLimit-Remaining": remaining.toString(),
-          "X-RateLimit-Reset": reset.toString(),
-        },
-      });
-    }
+  if (withOption) {
+    customPrompt = `Berikan 4 opsi jawaban pilihan ganda dan 1 jawaban yang benar untuk pertanyaan '${prompt}', dengan format (a)jawaban a, (b)jawaban b, (c)jawaban c, (d) jawaban d, dan (correct) pilihan jawaban a,b,c atau d tanpa text. berikan opsi jawaban se efektif dan sesingkat mungkin.`;
+  } else {
+    customPrompt = `Berikan 1 jawaban untuk pertanyaan '${prompt}', dengan format (correct)jawaban, karena (correct) adalah jawaban, tidak perlu menambahkan text lain selain (correct) jawaban, berikan jawaban se efektif dan sesingkat mungkin.`;
   }
 
-  const { prompt } = await req.json();
-  const customPrompt = `Berikan 1 jawaban untuk pertanyaan '${prompt}', dengan format (a)jawaban, karena (a) adalah jawaban, tidak perlu menambahkan text lain selain (a) jawaban, berikan jawaban se efektif dan sesingkat mungkin.`;
   const response = await openai.completions.create({
     model: "gpt-3.5-turbo-instruct",
     stream: true,
     temperature: 0.2,
     max_tokens: 100,
-    prompt: customPrompt,
+    prompt: customPrompt.replace("(s)", ""),
   });
 
   const stream = OpenAIStream(response);

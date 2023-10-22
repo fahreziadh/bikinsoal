@@ -12,24 +12,6 @@ const openai = new OpenAI({
 export const runtime = "edge";
 
 export async function POST(req: Request) {
-  // Rate Limit
-  if (env.KV_REST_API_URL && env.KV_REST_API_TOKEN) {
-    const ip = req.headers.get("x-forwarded-for");
-    const ratelimit = new Ratelimit({
-      redis: kv,
-      // rate limit to 5 requests per 10 second
-      limiter: Ratelimit.slidingWindow(5, "10s"),
-    });
-    console.log(`ratelimit_${ip}`)
-    const { success } = await ratelimit.limit(
-      `ratelimit_${ip}`,
-    );
-
-    if (!success) {
-      return new Response("(e)Gagal memproses permintaan, coba lagi");
-    }
-  }
-
   const { prompt } = await req.json();
   const params = new URL(req.url).searchParams;
   const withOption = params.get("withOption") === "true" ? true : false;
@@ -62,15 +44,15 @@ export async function POST(req: Request) {
   let generateQuizPrompt = "";
 
   if (withOption) {
-    generateQuizPrompt = `Berikan soal pilihan ganda tanpa pilihan, hanya soal saja. berjumlah ${total} untuk ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(s)(q)question(s)(q)question(s). jangan ada urutan nomor pada awal soal. tanda (q) untuk question, dan (s) untuk stop.`;
+    generateQuizPrompt = `Berikan soal pilihan ganda tanpa pilihan, hanya soalnya saja. berjumlah ${total} untuk ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(s)(q)question(s)(q)question(s). jangan ada urutan nomor pada awal soal. tanda (q) untuk question, dan (s) untuk mengakhiri pertanyaan.`;
   } else {
-    generateQuizPrompt = `Berikan soal berjumlah ${total} untuk ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(s)(q)question(s)(q)question(s). jangan ada urutan nomor pada awal soal. tanda (q) untuk question, dan (s) untuk stop.`;
+    generateQuizPrompt = `Berikan soal berjumlah ${total} untuk ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(s)(q)question(s)(q)question(s). jangan ada urutan nomor pada awal soal. tanda (q) untuk question, dan (s) untuk mengakhiri pertanyaan.`;
   }
 
   const generateQuiz = await openai.completions.create({
     model: "gpt-3.5-turbo-instruct",
     stream: true,
-    temperature: 0.7,
+    temperature: 0.6,
     max_tokens: 1000,
     prompt: generateQuizPrompt,
   });
