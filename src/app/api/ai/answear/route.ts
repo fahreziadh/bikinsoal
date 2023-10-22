@@ -13,13 +13,12 @@ export const runtime = "edge";
 
 export async function POST(req: Request) {
   // Rate Limit
-
   if (env.KV_REST_API_URL && env.KV_REST_API_TOKEN) {
     const ip = req.headers.get("x-forwarded-for");
     const ratelimit = new Ratelimit({
       redis: kv,
       // rate limit to 5 requests per 10 seconds
-      limiter: Ratelimit.slidingWindow(5, "10s"),
+      limiter: Ratelimit.slidingWindow(15, "10s"),
     });
 
     const { success, limit, reset, remaining } = await ratelimit.limit(

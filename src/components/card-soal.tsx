@@ -90,18 +90,7 @@ const CardSoal = ({ className, soal, index, withOption }: CardSoalProps) => {
               variant="secondary"
               className="w-max"
             >
-              <RefreshCcw size={14} />
-            </Button>
-          </TooltipShared>
-          <TooltipShared tooltipText="Simpan soal ini">
-            <Button
-              disabled={isLoadingAnswear || isLoadingOption}
-              onClick={onSaveQuestion}
-              size="sm"
-              variant="secondary"
-              className="w-max"
-            >
-              <Save size={14} />
+              <RefreshCcw size={14} className="mr-2"/> Regenerate Jawaban
             </Button>
           </TooltipShared>
         </div>

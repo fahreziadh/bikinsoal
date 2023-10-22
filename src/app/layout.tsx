@@ -6,6 +6,7 @@ import { headers } from "next/headers";
 import { TRPCReactProvider } from "@/trpc/react";
 import { Toaster } from "react-hot-toast";
 import Navbar from "@/components/navbar";
+import NextTopLoader from "nextjs-toploader";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({
         className={`dark relative min-h-screen bg-background font-sans antialiased ${inter.variable}`}
       >
         <TRPCReactProvider headers={headers()}>
+          <NextTopLoader color="#e11d48" />
           <Navbar />
           {children}
           <Toaster position="bottom-center" />

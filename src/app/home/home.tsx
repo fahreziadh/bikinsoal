@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <div className="container">
       <div className="mt-[60px] flex flex-col items-center justify-center">
-        <Image src={"/logo.png"} width={150} height={150} alt="Logo" />
+        <Image src={"/logo.png"} width={100} height={100} alt="Logo" />
         <h1 className="text-2xl font-medium">Bikin Soal</h1>
         <form
           onSubmit={handleSubmit}

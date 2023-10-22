@@ -13,6 +13,7 @@
   "dependencies": {
     "@auth/drizzle-adapter": "^0.3.2",
     "@planetscale/database": "^1.11.0",
+    "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
@@ -33,6 +34,7 @@
     "lucide-react": "^0.288.0",
     "next": "^13.5.4",
     "next-auth": "^4.23.0",
+    "nextjs-toploader": "^1.5.3",
     "openai": "^4.12.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",

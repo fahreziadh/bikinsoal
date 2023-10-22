@@ -18,16 +18,16 @@ export async function POST(req: Request) {
     const ip = req.headers.get("x-forwarded-for");
     const ratelimit = new Ratelimit({
       redis: kv,
-      // rate limit to 5 requests per 24 hours
-      limiter: Ratelimit.slidingWindow(5, "24h"),
+      // rate limit to 5 requests per 10 second
+      limiter: Ratelimit.slidingWindow(5, "10s"),
     });
 
-    const { success, limit, reset, remaining } = await ratelimit.limit(
+    const { success } = await ratelimit.limit(
       `ratelimit_${ip}`,
     );
 
     if (!success) {
-      return new Response("(e)Kamu Sudah mencapai batas request harian yaitu 5 kali, Coba Lagi Besok ya 🤪");
+      return new Response("(e)Gagal memproses permintaan, coba lagi");
     }
   }
 
