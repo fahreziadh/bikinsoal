@@ -13,7 +13,9 @@
   "dependencies": {
     "@auth/drizzle-adapter": "^0.3.2",
     "@planetscale/database": "^1.11.0",
+    "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-switch": "^1.0.3",
     "@t3-oss/env-nextjs": "^0.7.0",
     "@tanstack/react-query": "^4.32.6",
     "@trpc/client": "^10.37.1",

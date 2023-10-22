@@ -11,7 +11,9 @@ export const runtime = "edge";
 
 export async function POST(req: Request) {
   const { prompt } = await req.json();
-
+  const params = new URL( req.url).searchParams
+  const withOption = params.get("withOption") === 'true' ? true : false
+  
   const classificationResponse = await openai.completions.create({
     model: "gpt-3.5-turbo-instruct",
     stream: false,
@@ -36,7 +38,14 @@ export async function POST(req: Request) {
   if (total > 15){
     return new Response("(e)Jumlah soal maksimal 15");
   }
-  const generateQuizPrompt = `Berikan soal berjumlah ${total} untuk ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(s)(q)question(s)(q)question(s). jangan ada urutan nomor pada awal soal. tanda (q) untuk question, dan (s) untuk stop.`;
+
+  let generateQuizPrompt = ''
+
+  if(withOption){
+    generateQuizPrompt = `Berikan soal pilihan ganda tanpa pilihan, hanya soal saja. berjumlah ${total} untuk ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(s)(q)question(s)(q)question(s). jangan ada urutan nomor pada awal soal. tanda (q) untuk question, dan (s) untuk stop.`;
+  }else{
+   generateQuizPrompt = `Berikan soal berjumlah ${total} untuk ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(s)(q)question(s)(q)question(s). jangan ada urutan nomor pada awal soal. tanda (q) untuk question, dan (s) untuk stop.`;
+  }
 
   const generateQuiz = await openai.completions.create({
     model: "gpt-3.5-turbo-instruct",
