@@ -2,6 +2,9 @@
 import OpenAI from "openai";
 import { env } from "@/env.mjs";
 import { OpenAIStream, StreamingTextResponse } from "ai";
+import { db } from "@/server/db";
+import { questions } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY || "",
@@ -12,6 +15,7 @@ export const runtime = "edge";
 export async function POST(req: Request) {
   const { prompt } = await req.json();
   const params = new URL(req.url).searchParams;
+  const userId = params.get("userId") ?? "";
   const withOption = params.get("withOption") === "true" ? true : false;
 
   let customPrompt = "";
@@ -30,7 +34,47 @@ export async function POST(req: Request) {
     prompt: customPrompt.replace("(stop)", ""),
   });
 
-  const stream = OpenAIStream(response);
+  const stream = OpenAIStream(response, {
+    async onCompletion(completion) {
+      const question = prompt as string;
+      const answer = completion.split("(correct)")?.at(1);
+      const optionA = completion.split("(a)").at(1)?.split("(").at(0) ?? "";
+      const optionB = completion.split("(b)").at(1)?.split("(").at(0) ?? "";
+      const optionC = completion.split("(c)").at(1)?.split("(").at(0) ?? "";
+      const optionD = completion.split("(d)").at(1)?.split("(").at(0) ?? "";
+
+      const currentQuestion = await db.query.questions.findFirst({
+        where: (fields, { eq, and }) =>
+          and(eq(fields.userId, userId), eq(fields.question, question)),
+      });
+
+      if (currentQuestion) {
+        await db
+          .update(questions)
+          .set({
+            optionA,
+            optionB,
+            optionC,
+            optionD,
+            answer,
+          })
+          .where(eq(questions.id, currentQuestion.id));
+
+        return;
+      }
+
+      await db.insert(questions).values({
+        id: crypto.randomUUID(),
+        userId,
+        question,
+        optionA,
+        optionB,
+        optionC,
+        optionD,
+        answer
+      });
+    },
+  });
 
   // Respond with the stream
   return new StreamingTextResponse(stream);

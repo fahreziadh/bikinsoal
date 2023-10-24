@@ -7,31 +7,33 @@ import { RefreshCcw } from "lucide-react";
 import { TooltipShared } from "./tooltip-shared";
 import toast from "react-hot-toast";
 
-const CardSoal = ({ className, soal, index, withOption }: CardSoalProps) => {
+const CardSoal = ({
+  className,
+  soal,
+  index,
+  withOption = false,
+  userId,
+}: CardSoalProps) => {
   const {
-    completion: textAnswear,
-    complete: onGetTextAnswear,
-    isLoading: isLoadingAnswear,
+    completion: textAnswer,
+    complete: onGetTextAnswer,
+    isLoading: isLoadingAnswer,
   } = useCompletion({
-    api: `/api/ai/answear?withOption=${withOption}`,
+    api: `/api/ai/answer?withOption=${withOption}&userId=${userId}`,
   });
 
   useEffect(() => {
-    onRegenerateAnswear();
+    onRegenerateAnswer();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [soal]);
 
-  function onRegenerateAnswear() {
+  function onRegenerateAnswer() {
     const stop = soal?.split("(stop)").length ?? 0;
-    if (stop > 1 && soal && !isLoadingAnswear) {
-      onGetTextAnswear(soal).catch(() => {
+    if (stop > 1 && soal && !isLoadingAnswer) {
+      onGetTextAnswer(soal).catch(() => {
         console.log("error");
       });
     }
-  }
-
-  function onSaveQuestion() {
-    toast("Working in Progress");
   }
 
   return (
@@ -47,19 +49,18 @@ const CardSoal = ({ className, soal, index, withOption }: CardSoalProps) => {
         <div className={cn("mb-3 w-full font-semibold")}>
           {soal?.replace("(stop)", "")}
         </div>
-        {textAnswear.length > 0 ? (
+        {textAnswer.length > 0 ? (
           <>
             {withOption ? (
               <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>A. {textAnswear.split("(a)").at(1)?.split("(").at(0)}</div>
-                <div>B. {textAnswear.split("(b)").at(1)?.split("(").at(0)}</div>
-                <div>C. {textAnswear.split("(c)").at(1)?.split("(").at(0)}</div>
-                <div>D. {textAnswear.split("(d)").at(1)?.split("(").at(0)}</div>
+                <div>A. {textAnswer.split("(a)").at(1)?.split("(").at(0)}</div>
+                <div>B. {textAnswer.split("(b)").at(1)?.split("(").at(0)}</div>
+                <div>C. {textAnswer.split("(c)").at(1)?.split("(").at(0)}</div>
+                <div>D. {textAnswer.split("(d)").at(1)?.split("(").at(0)}</div>
               </div>
             ) : null}
             <p className="mt-3 text-sm">
-              Jawaban Benar:{" "}
-              {textAnswear.split("(correct)")?.at(1)}
+              Jawaban Benar: {textAnswer.split("(correct)")?.at(1)}
             </p>
           </>
         ) : null}
@@ -67,8 +68,8 @@ const CardSoal = ({ className, soal, index, withOption }: CardSoalProps) => {
         <div className="mt-2 inline-flex gap-2 self-end">
           <TooltipShared tooltipText="Re-generate Jawaban">
             <Button
-              disabled={isLoadingAnswear}
-              onClick={onRegenerateAnswear}
+              disabled={isLoadingAnswer}
+              onClick={onRegenerateAnswer}
               size="sm"
               variant="secondary"
               className="w-max"
@@ -86,6 +87,7 @@ interface CardSoalProps {
   soal?: string;
   index?: number;
   withOption?: boolean;
+  userId?: string;
 }
 
 export default CardSoal;

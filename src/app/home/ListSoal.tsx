@@ -1,7 +1,8 @@
 import CardSoal from "@/components/card-soal";
+import { type Session } from "next-auth";
 import React from "react";
 
-const ListSoal = ({ soalText = "", withOption = false }: ListSoalProps) => {
+const ListSoal = ({ soalText = "", withOption = false, session }: ListSoalProps) => {
   return (
     <div>
       {soalText.split("(q)").length > 1 ? (
@@ -13,7 +14,7 @@ const ListSoal = ({ soalText = "", withOption = false }: ListSoalProps) => {
         {soalText.split("(q)").map((soal, i) => {
           if (i < 1) return null;
           return (
-            <CardSoal withOption={withOption} key={i} soal={soal} index={i} />
+            <CardSoal withOption={withOption} key={i} soal={soal} index={i} userId={session?.user.id} />
           );
         })}
       </div>
@@ -24,6 +25,7 @@ const ListSoal = ({ soalText = "", withOption = false }: ListSoalProps) => {
 interface ListSoalProps {
   soalText: string;
   withOption?: boolean;
+  session?: Session | null;
 }
 
 export default ListSoal;

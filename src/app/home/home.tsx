@@ -10,14 +10,26 @@ import ListSoal from "./ListSoal";
 import { SwitchOption } from "./SwitchOption";
 import { useState } from "react";
 import { type Session } from "next-auth";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Home({ session }: Props) {
   const [withOption, setWithOption] = useState(false);
-  const { completion, input, handleInputChange, handleSubmit, isLoading } =
-    useCompletion({
-      api: `/api/ai?withOption=${withOption}`,
-    });
+  const router = useRouter();
+  const [input, setInput] = useState("");
+  const { completion, complete, isLoading } = useCompletion({
+    api: `/api/ai?withOption=${withOption}`,
+  });
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!session) {
+      router.push("/api/auth/signin");
+      return;
+    }
+    if (input) {
+      await complete(input);
+    }
+  };
 
   return (
     <div className="container">
@@ -30,40 +42,33 @@ export default function Home({ session }: Props) {
         >
           <Input
             required
-            onChange={handleInputChange}
+            onChange={(e) => setInput(e.target.value)}
             value={input}
             className="mx-auto"
             placeholder="4 Soal matematika, kelas 2 Sma, dengan topik 'Aljabar'"
           />
 
-          {session ? (
-            <Button
-              disabled={isLoading && input != ""}
-              type="submit"
-              className="w-[120px]"
-            >
-              {isLoading && input ? (
-                "Loading..."
-              ) : (
-                <>
-                  Generate <ChevronRight className="ml-2" size={16} />
-                </>
-              )}
-            </Button>
-          ) : (
-            <Link href={"/api/auth/signin"}>
-              <Button type="button" className="w-[120px]">
+          <Button
+            disabled={isLoading && input != ""}
+            type="submit"
+            className="w-[120px]"
+          >
+            {isLoading && input ? (
+              "Loading..."
+            ) : (
+              <>
                 Generate <ChevronRight className="ml-2" size={16} />
-              </Button>
-            </Link>
-          )}
+              </>
+            )}
+          </Button>
+
           <SwitchOption onCheckedChange={setWithOption} checked={withOption} />
           <div className="text-sm text-rose-500">
             {completion.split("(e)").at(1)}
           </div>
         </form>
       </div>
-      <ListSoal soalText={completion} withOption={withOption} />
+      <ListSoal soalText={completion} withOption={withOption} session={session}/>
       <ListSoalPlaceholder
         state={
           cn(
