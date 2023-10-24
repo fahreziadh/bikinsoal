@@ -2,7 +2,7 @@ import React from 'react'
 
 const Page = () => {
   return (
-    <div>Working in Progress</div>
+    <div className='text-xl flex justify-center text-center items-center'>Working in Progress</div>
   )
 }
 
