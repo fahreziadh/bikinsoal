@@ -33,7 +33,7 @@
     "drizzle-orm": "^0.28.5",
     "framer-motion": "^10.16.4",
     "lucide-react": "^0.288.0",
-    "next": "^13.5.4",
+    "next": "^14.0.0",
     "next-auth": "^4.23.0",
     "nextjs-toploader": "^1.5.3",
     "openai": "^4.12.4",
@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@types/eslint": "^8.44.2",
-    "@types/node": "^18.16.0",
+    "@types/node": "^18.17.0",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.3.0",
