@@ -3,24 +3,17 @@ import { Card } from "./ui/card";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { GithubIcon, Twitter, Youtube } from "lucide-react";
-import Image from "next/image";
 import { getServerAuthSession } from "../server/auth";
 import { Profile } from "./profile";
+import { TokenCount } from "./token-count";
 
 const Navbar = () => {
   return (
-    <div className="container grid grid-cols-3 pt-3">
-      <Link href={"/"} className="w-max  self-center">
-        <Image
-          src={"/logo.png"}
-          width={30}
-          height={30}
-          className="object-contain"
-          alt="Logo"
-        />
-      </Link>
+    <div className="container grid grid-cols-3 pt-3 justify-center items-center">
+      <div>
+        <TokenCount />
+      </div>
       <CardLink />
-
       <ProfileSection />
     </div>
   );
