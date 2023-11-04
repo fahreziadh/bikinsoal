@@ -40,8 +40,8 @@ export async function POST(req: Request) {
   if (error) {
     return new Response(error, { status: 400 });
   }
-  if (total > 15) {
-    return new Response("(e)Jumlah soal maksimal 15");
+  if (total > 25) {
+    return new Response("(e)Jumlah soal maksimal 25");
   }
 
   const user = await db.query.users.findFirst({
@@ -63,11 +63,12 @@ export async function POST(req: Request) {
   let generateQuizPrompt = "";
 
   if (withOption) {
-    generateQuizPrompt = `Berikan soal pilihan ganda tanpa pilihan, hanya soalnya saja. berjumlah ${total} untuk ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(stop)(q)question(stop)(q)question(stop). jangan ada urutan nomor pada awal soal. tanda (q) untuk question, dan (stop) untuk mengakhiri pertanyaan.`;
+    generateQuizPrompt = `Berikan soal pilihan ganda tanpa pilihan, hanya soalnya saja. berjumlah ${total} untuk kelas ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(stop)(q)question(stop)(q)question(stop). jangan ada urutan nomor pada awal soal. tanda (q) untuk question, dan (stop) untuk mengakhiri pertanyaan.`;
   } else {
-    generateQuizPrompt = `Berikan soal berjumlah ${total} untuk ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(stop)(q)question(stop)(q)question(stop). jangan ada urutan nomor pada awal soal. tanda (q) untuk question, dan (stop) untuk mengakhiri pertanyaan.`;
+    generateQuizPrompt = `Berikan soal berjumlah ${total} untuk kelas ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(stop)(q)question(stop)(q)question(stop). jangan ada urutan nomor pada awal soal. tanda (q) untuk question, dan (stop) untuk mengakhiri pertanyaan.`;
   }
 
+  console.log(generateQuizPrompt);
   const generateQuiz = await openai.completions.create({
     model: "gpt-3.5-turbo-instruct",
     stream: true,
