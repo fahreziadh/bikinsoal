@@ -3,7 +3,7 @@ import OpenAI from "openai";
 import { env } from "@/env.mjs";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { db } from "@/server/db";
-import { questions } from "@/server/db/schema";
+import { questions, users } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 
 const openai = new OpenAI({

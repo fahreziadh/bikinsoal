@@ -7,11 +7,12 @@ import { getServerAuthSession } from "../server/auth";
 import { Profile } from "./profile";
 import { TokenCount } from "./token-count";
 
-const Navbar = () => {
+const Navbar = async () => {
+  const session = await getServerAuthSession()
   return (
     <div className="container grid grid-cols-3 pt-3 justify-center items-center">
       <div>
-        <TokenCount />
+        <TokenCount session={session} />
       </div>
       <CardLink />
       <ProfileSection />

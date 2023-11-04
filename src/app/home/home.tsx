@@ -11,13 +11,18 @@ import { SwitchOption } from "./SwitchOption";
 import { useState } from "react";
 import { type Session } from "next-auth";
 import { useRouter } from "next/navigation";
+import { useSWRConfig } from "swr";
 
 export default function Home({ session }: Props) {
   const [withOption, setWithOption] = useState(false);
   const router = useRouter();
   const [input, setInput] = useState("");
+  const { mutate } = useSWRConfig()
   const { completion, complete, isLoading } = useCompletion({
-    api: `/api/ai?withOption=${withOption}`,
+    api: `/api/ai?withOption=${withOption}&userId=${session?.user.id ?? ""}`,
+    onFinish() {
+      mutate('/api/token').catch(e => (console.log(e)))
+    },
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -68,7 +73,7 @@ export default function Home({ session }: Props) {
           </div>
         </form>
       </div>
-      <ListSoal soalText={completion} withOption={withOption} session={session}/>
+      <ListSoal soalText={completion} withOption={withOption} session={session} />
       <ListSoalPlaceholder
         state={
           cn(

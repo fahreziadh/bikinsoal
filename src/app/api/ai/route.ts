@@ -2,8 +2,10 @@
 import OpenAI from "openai";
 import { env } from "@/env.mjs";
 import { OpenAIStream, StreamingTextResponse } from "ai";
-import { Ratelimit } from "@upstash/ratelimit";
-import { kv } from "@vercel/kv";
+import { db } from "@/server/db";
+import { users } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY || "",
@@ -14,6 +16,7 @@ export const runtime = "edge";
 export async function POST(req: Request) {
   const { prompt } = await req.json();
   const params = new URL(req.url).searchParams;
+  const userId = params.get("userId") ?? "";
   const withOption = params.get("withOption") === "true" ? true : false;
 
   const classificationResponse = await openai.completions.create({
@@ -40,6 +43,22 @@ export async function POST(req: Request) {
   if (total > 15) {
     return new Response("(e)Jumlah soal maksimal 15");
   }
+
+  const user = await db.query.users.findFirst({
+    where: eq(users.id, userId),
+  })
+
+  const totalToken = user?.token ?? 0;
+
+  if (totalToken < total) {
+    return new Response("(e)Token tidak cukup 😔");
+  }
+
+  await db.update(users).set({
+    token: totalToken - total,
+  })
+
+  revalidateTag("totalToken");
 
   let generateQuizPrompt = "";
 
