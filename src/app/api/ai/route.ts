@@ -68,7 +68,6 @@ export async function POST(req: Request) {
     generateQuizPrompt = `Berikan soal berjumlah ${total} untuk kelas ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(stop)(q)question(stop)(q)question(stop). jangan ada urutan nomor pada awal soal. tanda (q) untuk question, dan (stop) untuk mengakhiri pertanyaan.`;
   }
 
-  console.log(generateQuizPrompt);
   const generateQuiz = await openai.completions.create({
     model: "gpt-3.5-turbo-instruct",
     stream: true,
