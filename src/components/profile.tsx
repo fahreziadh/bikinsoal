@@ -27,9 +27,9 @@ export function Profile() {
           <Link href={"/history"}>
             <DropdownMenuItem>History Soal</DropdownMenuItem>
           </Link>
-          <Link href="/bank-soal">
+          {/* <Link href="/bank-soal">
             <DropdownMenuItem>Bank Soal</DropdownMenuItem>
-          </Link>
+          </Link> */}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>

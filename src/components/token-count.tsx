@@ -36,7 +36,7 @@ export function TokenCount({ session }: { session: Session | null }) {
                 <Button size='sm' variant='outline' className={cn(isLoading || isValidating ? "animate-pulse":"")}><Coins size={14} className="mr-2" /> {token}</Button>
             </PopoverTrigger>
             <PopoverContent className="w-80">
-                {session ? (<div>
+                {/* {session ? (<div>
                     <div className="mb-4"><span className="font-bold underline">1 Token = 1 Soal</span>. Untuk menambah token silahkan pilih paket dibawah ini.</div>
                     {PaketToken.map((paket, index) => (
                         <Button key={index} className="w-full mt-1 inline-flex items-center justify-between" variant='outline'>
@@ -48,7 +48,8 @@ export function TokenCount({ session }: { session: Session | null }) {
                     <div>
                         Kamu harus <Link href="/api/auth/signin" className="text-blue-500 underline">login</Link> terlebih dahulu untuk membeli token.
                     </div>
-                )}
+                )} */}
+                Coming Soon
             </PopoverContent>
         </Popover>
     )
