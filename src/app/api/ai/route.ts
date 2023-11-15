@@ -46,7 +46,7 @@ export async function POST(req: Request) {
 
   const user = await db.query.users.findFirst({
     where: eq(users.id, userId),
-  })
+  });
 
   const totalToken = user?.token ?? 0;
 
@@ -54,9 +54,12 @@ export async function POST(req: Request) {
     return new Response("(e)Token tidak cukup 😔");
   }
 
-  await db.update(users).set({
-    token: totalToken - total,
-  })
+  await db
+    .update(users)
+    .set({
+      token: totalToken - total,
+    })
+    .where(eq(users.id, userId));
 
   revalidateTag("totalToken");
 
