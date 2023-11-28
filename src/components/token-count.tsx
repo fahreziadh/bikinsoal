@@ -49,7 +49,7 @@ export function TokenCount({ session }: { session: Session | null }) {
                         Kamu harus <Link href="/api/auth/signin" className="text-blue-500 underline">login</Link> terlebih dahulu untuk membeli token.
                     </div>
                 )} */}
-                Coming Soon
+                Token akan ke-reset setiap tanggal 1 setiap bulannya. Kamu akan mendapat 120 token setiap bulannya.
             </PopoverContent>
         </Popover>
     )
