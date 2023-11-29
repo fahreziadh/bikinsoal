@@ -27,7 +27,7 @@
 
 ## Introduction
 
-Dub is an open-source quiz generator tool for teacher.
+Bikinsoal is an open-source quiz generator tool for teacher.
 
 ## Features
 
