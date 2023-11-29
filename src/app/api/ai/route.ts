@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     stream: false,
     temperature: 0.2,
     max_tokens: 300,
-    prompt: `klasifikasi text berikut : "${prompt}". hanya berikan jawaban dengan format json {"total":number,"subject":string,"grade":string,"topic":string}, jika tidak ada topik yang berarti beri nilai 'Umum'. jika tidak ada grade beri nilai 'Umum', jika ada grade pastikan menambahkan angkanya`,
+    prompt: `klasifikasi text berikut : "${prompt}". hanya berikan jawaban dengan format json {"total":'jumlah soal (number)',"subject":'mata pelajaran (string)',"grade":'untuk kelas berapa (string)',"topic":'tentang apa (string)'}, jika tidak ada topik yang berarti beri nilai 'Umum'. jika tidak ada grade beri nilai 'Umum', jika ada grade pastikan menambahkan angkanya`,
   });
 
   const text = classificationResponse.choices[0]?.text;

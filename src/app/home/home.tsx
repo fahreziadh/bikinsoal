@@ -12,16 +12,17 @@ import { useState } from "react";
 import { type Session } from "next-auth";
 import { useRouter } from "next/navigation";
 import { useSWRConfig } from "swr";
+import { motion } from "framer-motion";
 
 export default function Home({ session }: Props) {
   const [withOption, setWithOption] = useState(false);
   const router = useRouter();
   const [input, setInput] = useState("");
-  const { mutate } = useSWRConfig()
+  const { mutate } = useSWRConfig();
   const { completion, complete, isLoading } = useCompletion({
     api: `/api/ai?withOption=${withOption}&userId=${session?.user.id ?? ""}`,
     onFinish() {
-      mutate('/api/token').catch(e => (console.log(e)))
+      mutate("/api/token").catch((e) => console.log(e));
     },
   });
 
@@ -38,7 +39,17 @@ export default function Home({ session }: Props) {
 
   return (
     <div className="container">
-      <div className="mt-[60px] flex flex-col items-center justify-center">
+      <motion.div
+        initial={{ opacity: 0, y: 200 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.5,
+          type: "spring",
+          bounce: 500,
+          stiffness: 100,
+        }}
+        className="mt-[60px] flex flex-col items-center justify-center"
+      >
         <Image src={"/logo.png"} width={100} height={100} alt="Logo" />
         <h1 className="text-2xl font-medium">Bikin Soal</h1>
         <form
@@ -72,17 +83,44 @@ export default function Home({ session }: Props) {
             {completion.split("(e)").at(1)}
           </div>
         </form>
-      </div>
-      <ListSoal soalText={completion} withOption={withOption} session={session} />
-      <ListSoalPlaceholder
-        state={
-          cn(
-            isLoading && input && "loading",
-            !isLoading && !completion && "idle",
-            completion && "success",
-          ) as "idle" | "loading" | "success"
-        }
-      />
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 200 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.5,
+          type: "spring",
+          bounce: 500,
+          stiffness: 100,
+        }}
+      >
+        <ListSoal
+          soalText={completion}
+          withOption={withOption}
+          session={session}
+        />
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 200 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          delay: 0.2,
+          duration: 0.5,
+          type: "spring",
+          bounce: 500,
+          stiffness: 100,
+        }}
+      >
+        <ListSoalPlaceholder
+          state={
+            cn(
+              isLoading && input && "loading",
+              !isLoading && !completion && "idle",
+              completion && "success",
+            ) as "idle" | "loading" | "success"
+          }
+        />
+      </motion.div>
     </div>
   );
 }
