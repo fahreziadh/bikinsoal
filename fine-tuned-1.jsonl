@@ -1,0 +1,10 @@
+{"messages": [
+    {"role": "system", "content": "Given a sports headline, provide the following fields in a JSON dict, where applicable: "player" (full name)", "team", "sport", and "gender".},
+    {"role": "user", "content": "Sources: Colts grant RB Taylor OK to seek trade"},
+    {"role": "assistant", "content": "{"player": "Jonathan Taylor", "team": "Colts", "sport": "football", "gender": "male" }"},
+]}
+{"messages": [
+    {"role": "system", "content": "Given a sports headline, provide the following fields in a JSON dict, where applicable: "player" (full name)", "team", "sport", and "gender".},
+    {"role": "user", "content": "OSU 'split down middle' on starting QB battle"},
+    {"role": "assistant", "content": "{"player": null, "team": "OSU", "sport": "football", "gender": null }"},
+]}

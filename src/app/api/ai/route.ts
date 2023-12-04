@@ -5,7 +5,7 @@ import { OpenAIStream, StreamingTextResponse } from "ai";
 import { db } from "@/server/db";
 import { users } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY || "",
@@ -22,9 +22,9 @@ export async function POST(req: Request) {
   const classificationResponse = await openai.completions.create({
     model: "gpt-3.5-turbo-instruct",
     stream: false,
-    temperature: 0.2,
+    temperature: 0,
     max_tokens: 300,
-    prompt: `klasifikasi text berikut : "${prompt}". hanya berikan jawaban dengan format json {"total":'jumlah soal (number)',"subject":'mata pelajaran (string)',"grade":'untuk kelas berapa (string)',"topic":'tentang apa (string)'}, jika tidak ada topik yang berarti beri nilai 'Umum'. jika tidak ada grade beri nilai 'Umum', jika ada grade pastikan menambahkan angkanya`,
+    prompt: `klasifikasi text berikut : "${prompt}". hanya berikan jawaban dengan format json {"total":'jumlah soal (number)',"subject":'mata pelajaran (string and please translate this to english)',"grade":'untuk kelas berapa (example : 1st,3rd,9th - 12th',"topic":'tentang apa (string)'}, jika tidak ada topik yang berarti beri nilai 'Umum'. jika tidak ada grade beri nilai 'Umum', jika ada grade pastikan menambahkan angkanya`,
   });
 
   const text = classificationResponse.choices[0]?.text;
@@ -66,15 +66,16 @@ export async function POST(req: Request) {
   let generateQuizPrompt = "";
 
   if (withOption) {
-    generateQuizPrompt = `Berikan soal pilihan ganda tanpa pilihan, hanya soalnya saja. berjumlah ${total} untuk kelas ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(stop)(q)question(stop)(q)question(stop). jangan ada urutan nomor pada awal soal. tanda (q) untuk question, dan (stop) untuk mengakhiri pertanyaan.`;
+    generateQuizPrompt = `Please create ${total} ${subject} quiz questions prepare, the quiz for answer 4 choice, but dont give the option or the answer yet. suitable for ${grade}-grade students in Indonesia. Use curriculum of Indonesian k-13 of curriculum education. the topic is "${topic}". Use Indonesian language for the questions. Format the quiz in the following way: Begin each question with '(q)' to denote the question, and follow each question with '(stop)' to indicate a stop before the next question.`;
   } else {
-    generateQuizPrompt = `Berikan soal berjumlah ${total} untuk kelas ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: (q)question(stop)(q)question(stop)(q)question(stop). jangan ada urutan nomor pada awal soal. tanda (q) untuk question, dan (stop) untuk mengakhiri pertanyaan.`;
+    generateQuizPrompt = `Please create ${total} ${subject} quiz questions suitable for ${grade}-grade students in Indonesia. Use curriculum of Indonesian k-13 of curriculum education. the topic is "${topic}". Use Indonesian language for the questions. Format the quiz in the following way: Begin each question with '(q)' to denote the question, and follow each question with '(stop)' to indicate a stop before the next question.`;
   }
 
+  console.log(generateQuizPrompt);
   const generateQuiz = await openai.completions.create({
     model: "gpt-3.5-turbo-instruct",
     stream: true,
-    temperature: 0.6,
+    temperature: 1,
     max_tokens: 1000,
     prompt: generateQuizPrompt,
   });
