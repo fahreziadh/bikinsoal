@@ -29,20 +29,12 @@ export default function RootLayout({
       <body
         className={`dark relative min-h-screen bg-background font-sans antialiased ${inter.variable}`}
       >
-     <div className="flex flex-col items-center justify-center h-screen container max-w-[600px]">
-        <h1 className="">
-          This project has developed into evaly.io :)
-        </h1>
-        <h1 className="mt-2">
-          To access this project, you can see the following repository: <a className="text-blue-500" href="https://github.com/fahreziadh/bikinsoal">https://github.com/fahreziadh/bikinsoal</a>
-        </h1>
-     </div>
-        {/* <TRPCReactProvider headers={headers()}>
+        <TRPCReactProvider headers={headers()}>
           <NextTopLoader color="#e11d48" />
           <Navbar />
           {children}
           <Toaster position="bottom-center" />
-        </TRPCReactProvider> */}
+        </TRPCReactProvider>
       </body>
     </html>
   );
