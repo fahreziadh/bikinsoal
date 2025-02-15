@@ -43,6 +43,12 @@
 		"@node-rs/argon2": "^2.0.2",
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
-		"drizzle-orm": "^0.38.4"
+		"bits-ui": "1.1.0",
+		"clsx": "^2.1.1",
+		"drizzle-orm": "^0.38.4",
+		"lucide-svelte": "^0.475.0",
+		"tailwind-merge": "^3.0.1",
+		"tailwind-variants": "^0.3.1",
+		"tailwindcss-animate": "^1.0.7"
 	}
 }
