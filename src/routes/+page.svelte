@@ -1,33 +1,70 @@
 <script>
 	import { Button } from '@/components/ui/button';
+	import { ScrollArea } from '@/components/ui/scroll-area';
 	import { Textarea } from '@/components/ui/textarea';
-	import { CommandIcon, CornerDownLeftIcon, LogInIcon, PlusIcon } from 'lucide-svelte';
+	import { useChat } from '@ai-sdk/svelte';
+	import { CommandIcon, CornerDownLeftIcon, LogInIcon, PlusIcon, SquareIcon } from 'lucide-svelte';
+	import { fade } from 'svelte/transition';
+
+	const { input, handleSubmit, messages, status, stop } = useChat();
 </script>
 
-<div class="flex min-h-screen flex-col">
-  <nav class="container py-4 flex flex-row justify-between">
-    <a class="font-medium text-2xl" href="/">Bikinsoal</a>
-    <div class="flex flex-row gap-2">
-      <Button variant="outline">
-        <span>Login</span>
-        <LogInIcon size={16} />
-      </Button>
-    </div>
-  </nav>
-	<div class="container max-w-2xl grow">
-		Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt, cumque ad voluptatem
-		blanditiis laudantium et eaque ipsa sequi magnam sunt, sit modi at autem. Incidunt veniam amet
-		rem est quaerat?
+<div class="flex h-dvh flex-1 flex-col">
+	<nav class="container flex flex-row justify-between py-4">
+		<a class="text-2xl font-medium" href="/">Bikinsoal</a>
+		<div class="flex flex-row gap-2">
+			<Button variant="outline">
+				<span>Login</span>
+				<LogInIcon size={16} />
+			</Button>
+		</div>
+	</nav>
+	<div class="flex-1 overflow-y-scroll">
+		<div class="container max-w-2xl pt-4 pb-14 prose prose-neutral prose-invert prose-pre:m-0 prose-pre:bg-transparent prose-pre:p-0">
+			{#if $messages.length === 0}
+				<div class="text-center text-sm text-muted-foreground">
+					Start chatting with the AI
+				</div>
+			{/if}
+			{#each $messages as message}
+				<li>{message.role}: {@html message.content}</li>
+			{/each}
+		</div>
 	</div>
-	<form class="relative mx-auto w-2xl mb-4">
-		<Textarea class="resize-none min-h-24" placeholder="Enter your text here"></Textarea>
-		<Button class="absolute bottom-2 right-2">
-			<span>Submit</span>
-			<div class="flex flex-row opacity-70">
-				<CommandIcon size={10} />
-				<PlusIcon size={10} />
-				<CornerDownLeftIcon size={10} />
-			</div>
-		</Button>
+	<form class="relative mx-auto mb-4 w-2xl" on:submit={handleSubmit}>
+		<Textarea
+			class="min-h-24 resize-none"
+			placeholder="Enter your text here"
+			bind:value={$input}
+			on:keydown={(e) => {
+				if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+					e.preventDefault();
+					handleSubmit(e);
+				}
+			}}
+		></Textarea>
+		<div class="absolute right-2 bottom-2">
+			{#if $status === 'ready' || $status === 'error'}
+				<Button type="submit">
+					<span>Submit</span>
+					<div class="flex flex-row opacity-70">
+						<CommandIcon size={10} />
+						<PlusIcon size={10} />
+						<CornerDownLeftIcon size={10} />
+					</div>
+				</Button>
+			{/if}
+			{#if $status === 'submitted'}
+				<Button disabled class="animate-pulse">
+					<span>Loading...</span>
+				</Button>
+			{/if}
+
+			{#if $status === 'streaming'}
+				<Button on:click={stop} size="icon" class="rounded-full">
+					<SquareIcon size={14} fill="currentColor" />
+				</Button>
+			{/if}
+		</div>
 	</form>
 </div>

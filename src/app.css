@@ -1,5 +1,8 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
 @custom-variant dark (&:where(.dark, .dark *));
+
 
 :root {
 	--background: hsl(0 0% 100%);

@@ -39,16 +39,22 @@
 		"vite": "^6.0.0"
 	},
 	"dependencies": {
+		"@ai-sdk/google": "^1.1.14",
+		"@ai-sdk/openai": "^1.1.11",
+		"@ai-sdk/svelte": "^1.1.17",
 		"@libsql/client": "^0.14.0",
 		"@node-rs/argon2": "^2.0.2",
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
+		"@tailwindcss/typography": "^0.5.16",
+		"ai": "^4.1.41",
 		"bits-ui": "0.22.0",
 		"clsx": "^2.1.1",
 		"drizzle-orm": "^0.38.4",
 		"lucide-svelte": "^0.475.0",
 		"tailwind-merge": "^3.0.1",
 		"tailwind-variants": "^0.3.1",
-		"tailwindcss-animate": "^1.0.7"
+		"tailwindcss-animate": "^1.0.7",
+		"zod": "^3.24.2"
 	}
 }
