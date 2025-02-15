@@ -20,8 +20,8 @@
 	--accent-foreground: hsl(240 5.9% 10%);
 	--destructive: hsl(0 72.22% 50.59%);
 	--destructive-foreground: hsl(0 0% 98%);
-	--ring: hsl(240 5% 64.9%);
-	--radius: 0.5rem;
+	--ring: hsl(0, 0%, 0%);
+	--radius: 1rem;
 
 	--sidebar-background: hsl(0 0% 98%);
 	--sidebar-foreground: hsl(240 5.3% 26.1%);
@@ -104,4 +104,10 @@ body {
 	font-feature-settings:
 		'rlig' 1,
 		'calt' 1;
+}
+
+
+.container {
+  margin-inline: auto;
+  padding-inline: 1rem;
 }
